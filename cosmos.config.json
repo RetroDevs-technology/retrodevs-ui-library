@@ -1,0 +1,10 @@
+{
+  "port": 5002,
+  "hostname": "localhost",
+  "watchDirs": ["src", "cosmos"],
+  "ignore": ["**/node_modules/**", "**/dist/**"],
+  "componentPaths": ["src/components"],
+  "fixturePaths": ["cosmos"],
+  "globalImports": ["src/index.css"],
+  "plugins": ["react-cosmos-plugin-vite"]
+}
