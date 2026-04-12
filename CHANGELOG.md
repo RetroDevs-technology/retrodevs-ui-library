@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-04-12
+
+First **stable** release on the `1.x` line. From this version onward, **breaking changes** to the public API (removed or renamed exports, incompatible prop or type changes) will increment the **major** version per [Semantic Versioning](https://semver.org/).
+
+The published **code and types** are unchanged from **v0.5.0**; this release marks a stability commitment for consumers of `@retrodevs/ui-library`.
+
+### Highlights (library surface)
+
+- **Core** — Base UI–based primitives (buttons, inputs, forms, dialog/sheet, combobox, sidebar, table, charts, etc.)
+- **Modules** — Template components (`BaseCard`, `BaseModal`, `BaseSelect`, `BasePopover`, …)
+- **Composites** — Search, date/time pickers, autocomplete, layout helpers, toaster, and related building blocks
+- **Adapters** & **animations** — Patterns for app-specific wiring and motion helpers
+- **Hooks** & **`cn`** — Shared utilities exported from the package entry
+- **Styles** — `import "@retrodevs/ui-library/styles.css"` (or the `./styles.css` export) for design tokens and component styling
+- **Developer tooling** — React Cosmos fixtures, `cosmos/cosmos-playground` fixture inputs, and `cosmos/tsconfig.json` for typechecked previews (not published in the npm tarball; `files` remains `dist`)
+
 ## [0.5.0] - 2026-04-12
 
 ### Added
@@ -205,7 +221,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Dark mode support via `next-themes`
 - JSDoc documentation for IntelliSense support
 
-[Unreleased]: https://github.com/greg_retro/ui-library/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/greg_retro/ui-library/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/greg_retro/ui-library/compare/v0.5.0...v1.0.0
 [0.5.0]: https://github.com/greg_retro/ui-library/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/greg_retro/ui-library/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/greg_retro/ui-library/compare/v0.2.1...v0.3.1
