@@ -45,6 +45,9 @@ function DarkModeToggle() {
  * Provides consistent background, padding, and layout for all component showcases.
  * Includes dark mode toggle functionality.
  *
+ * For editable props in the Cosmos UI, use `useFixtureInput` / `useFixtureSelect` from
+ * `cosmos/cosmos-playground.ts`.
+ *
  * @param props - FixtureWrapper props
  * @param props.title - Optional title to display at the top
  * @param props.children - Fixture content to wrap

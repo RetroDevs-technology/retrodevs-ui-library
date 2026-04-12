@@ -1,53 +1,60 @@
-import React, { useState } from 'react'
-import { BaseTab } from '../src/components/modules/base-tab'
-import { Card, CardContent } from '../src/components/core/card'
-import { FixtureWrapper } from './FixtureWrapper'
+import { useState } from "react"
+
+import { BaseTab } from "../src/components/modules/base-tab"
+import { Card, CardContent } from "../src/components/core/card"
+import { useFixtureInput } from "./cosmos-playground"
+import { FixtureWrapper } from "./FixtureWrapper"
 
 export default function TabsShowcase() {
-  const [activeTab, setActiveTab] = useState<string>('profile')
-  const [activeTabWithImages, setActiveTabWithImages] = useState<string>('profile')
+  const [activeTab, setActiveTab] = useState<string>("profile")
+  const [activeTabWithImages, setActiveTabWithImages] = useState<string>("profile")
+
+  const [profileText] = useFixtureInput("tabsProfilePanelText", "Profile content goes here")
+  const [payoutText] = useFixtureInput("tabsPayoutPanelText", "Payout content goes here")
+  const [settingsText] = useFixtureInput("tabsSettingsPanelText", "Settings content goes here")
+  const [supportText] = useFixtureInput("tabsSupportPanelText", "Support content goes here")
 
   const tabs = [
     {
-      value: 'profile' as const,
-      name: 'Profile',
+      value: "profile" as const,
+      name: "Profile",
       element: (
         <Card>
           <CardContent className="p-6">
-            <p>Profile content goes here</p>
+            <p>{profileText}</p>
           </CardContent>
         </Card>
       ),
     },
     {
-      value: 'payout' as const,
-      name: 'Payout',
+      value: "payout" as const,
+      name: "Payout",
       element: (
         <Card>
           <CardContent className="p-6">
-            <p>Payout content goes here</p>
+            <p>{payoutText}</p>
           </CardContent>
         </Card>
       ),
     },
     {
-      value: 'settings' as const,
-      name: 'Settings',
+      value: "settings" as const,
+      name: "Settings",
       element: (
         <Card>
           <CardContent className="p-6">
-            <p>Settings content goes here</p>
+            <p>{settingsText}</p>
           </CardContent>
         </Card>
       ),
     },
     {
-      value: 'support' as const,
-      name: 'Support',
+      value: "support" as const,
+      name: "Support",
       element: (
         <Card>
           <CardContent className="p-6">
-            <p>Support content goes here</p>
+            <p>{supportText}</p>
           </CardContent>
         </Card>
       ),
@@ -56,9 +63,9 @@ export default function TabsShowcase() {
 
   const tabsWithImages = [
     {
-      value: 'profile' as const,
-      image: 'https://via.placeholder.com/16x16',
-      name: 'Profile',
+      value: "profile" as const,
+      image: "https://via.placeholder.com/16x16",
+      name: "Profile",
       element: (
         <Card>
           <CardContent className="p-6">
@@ -68,9 +75,9 @@ export default function TabsShowcase() {
       ),
     },
     {
-      value: 'payout' as const,
-      image: 'https://via.placeholder.com/16x16',
-      name: 'Payout',
+      value: "payout" as const,
+      image: "https://via.placeholder.com/16x16",
+      name: "Payout",
       element: (
         <Card>
           <CardContent className="p-6">
@@ -80,8 +87,8 @@ export default function TabsShowcase() {
       ),
     },
     {
-      value: 'settings' as const,
-      name: 'Settings',
+      value: "settings" as const,
+      name: "Settings",
       element: (
         <Card>
           <CardContent className="p-6">
@@ -95,7 +102,10 @@ export default function TabsShowcase() {
   return (
     <FixtureWrapper>
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold">Base Tabs (Without Images)</h2>
+        <h2 className="text-2xl font-bold">Base Tabs (panel copy)</h2>
+        <p className="text-sm text-muted-foreground max-w-xl">
+          Edit the four panel bodies from the fixture panel.
+        </p>
         <BaseTab activeTab={activeTab} setActiveTab={setActiveTab} tab={tabs} />
       </section>
 

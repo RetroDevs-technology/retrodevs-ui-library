@@ -1,11 +1,18 @@
-import React, { useState } from 'react'
-import { DatePicker } from '../src/components/composites/date-picker'
-import { FixtureWrapper } from './FixtureWrapper'
-import { format } from 'date-fns'
+import { useState } from "react"
+import { format } from "date-fns"
+
+import { DatePicker } from "../src/components/composites/date-picker"
+import { useFixtureInput } from "./cosmos-playground"
+import { FixtureWrapper } from "./FixtureWrapper"
 
 export default function DatePickerShowcase() {
   const [singleDate, setSingleDate] = useState<Date | undefined>(new Date())
   const [rangeDate, setRangeDate] = useState<{ from?: Date; to?: Date } | undefined>()
+
+  const [singlePlaceholder] = useFixtureInput("datePickerSinglePlaceholder", "Pick a date")
+  const [rangePlaceholder] = useFixtureInput("datePickerRangePlaceholder", "Pick a date range")
+  const [futurePlaceholder] = useFixtureInput("datePickerFuturePlaceholder", "Pick a future date")
+  const [blockPast] = useFixtureInput("datePickerBlockPastDates", true)
 
   return (
     <FixtureWrapper>
@@ -15,12 +22,10 @@ export default function DatePickerShowcase() {
           <DatePicker
             date={singleDate}
             onDateChange={setSingleDate}
-            placeholder="Pick a date"
+            placeholder={singlePlaceholder}
           />
           {singleDate && (
-            <p className="text-sm text-muted-foreground">
-              Selected: {format(singleDate, "PPP")}
-            </p>
+            <p className="text-sm text-muted-foreground">Selected: {format(singleDate, "PPP")}</p>
           )}
         </div>
       </section>
@@ -32,7 +37,7 @@ export default function DatePickerShowcase() {
             mode="range"
             selected={rangeDate}
             onRangeChange={setRangeDate}
-            placeholder="Pick a date range"
+            placeholder={rangePlaceholder}
           />
           {rangeDate?.from && (
             <p className="text-sm text-muted-foreground">
@@ -49,12 +54,11 @@ export default function DatePickerShowcase() {
           <DatePicker
             date={singleDate}
             onDateChange={setSingleDate}
-            disabled={(date) => date < new Date()}
-            placeholder="Pick a future date"
+            disabled={
+              blockPast ? (date) => date < new Date(new Date().setHours(0, 0, 0, 0)) : undefined
+            }
+            placeholder={futurePlaceholder}
           />
-          <p className="text-sm text-muted-foreground">
-            Past dates are disabled
-          </p>
         </div>
       </section>
     </FixtureWrapper>

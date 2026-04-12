@@ -1,29 +1,47 @@
-import React, { useState, useEffect } from 'react'
-import { Progress, ProgressTrack, ProgressIndicator, ProgressValue, ProgressLabel } from '../src/components/core/progress'
-import { FixtureWrapper } from './FixtureWrapper'
+import { useEffect, useState } from "react"
+
+import {
+  Progress,
+  ProgressIndicator,
+  ProgressLabel,
+  ProgressTrack,
+  ProgressValue,
+} from "../src/components/core/progress"
+import { useFixtureInput } from "./cosmos-playground"
+import { FixtureWrapper } from "./FixtureWrapper"
 
 export default function ProgressShowcase() {
-  const [progress, setProgress] = useState(20)
+  const [animated, setAnimated] = useState(20)
+  const [liveLabel] = useFixtureInput("progressLiveLabel", "Loading")
+  const [liveValue] = useFixtureInput("progressLivePercent", 45)
+  const [runAnimation] = useFixtureInput("progressAnimateFirstBar", true)
+
+  const staticValue =
+    typeof liveValue === "number" && !Number.isNaN(liveValue)
+      ? Math.min(100, Math.max(0, liveValue))
+      : 45
 
   useEffect(() => {
+    if (!runAnimation) return
     const interval = setInterval(() => {
-      setProgress((current) => {
-        if (current >= 100) {
-          return 0
-        }
+      setAnimated((current) => {
+        if (current >= 100) return 0
         return Math.min(100, current + 10)
       })
     }, 1000)
     return () => clearInterval(interval)
-  }, [])
+  }, [runAnimation])
 
   return (
     <FixtureWrapper>
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold">Determinate Progress</h2>
+        <h2 className="text-2xl font-bold">Live controls</h2>
+        <p className="text-sm text-muted-foreground max-w-xl">
+          Label, static percent (0–100), and toggle auto-advance for the first bar.
+        </p>
         <div className="space-y-2">
-          <Progress value={progress}>
-            <ProgressLabel>Loading</ProgressLabel>
+          <Progress value={runAnimation ? animated : staticValue}>
+            <ProgressLabel>{liveLabel}</ProgressLabel>
             <ProgressTrack>
               <ProgressIndicator />
             </ProgressTrack>

@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   Card,
   CardHeader,
@@ -9,11 +8,33 @@ import {
 } from '../src/components/core/card'
 import { BaseCard } from '../src/components/modules/base-card'
 import { Button } from '../src/components/core/button'
+import { useFixtureInput } from './cosmos-playground'
 import { FixtureWrapper } from './FixtureWrapper'
 
 export default function CardShowcase() {
+  const [baseTitle] = useFixtureInput('baseCardTitle', 'Card Title')
+  const [baseDescription] = useFixtureInput(
+    'baseCardDescription',
+    'Card description goes here',
+  )
+  const [baseBody] = useFixtureInput('baseCardBody', 'This is the card content area.')
+
   return (
     <FixtureWrapper>
+      <section className="space-y-4">
+        <h2 className="text-2xl font-bold">BaseCard — live controls</h2>
+        <p className="text-sm text-muted-foreground max-w-xl">
+          Title, description, and body from the fixture panel.
+        </p>
+        <BaseCard
+          className="w-96"
+          title={baseTitle}
+          description={baseDescription}
+          content={<p>{baseBody}</p>}
+          footer={<Button type="button">Action</Button>}
+        />
+      </section>
+
       <section className="space-y-4">
         <h2 className="text-2xl font-bold">Standard Card (Manual Composition)</h2>
         <Card className="w-96">

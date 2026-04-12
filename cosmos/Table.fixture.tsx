@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   Table,
   TableBody,
@@ -8,43 +7,49 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '../src/components/core/table'
-import { FixtureWrapper } from './FixtureWrapper'
+} from "../src/components/core/table"
+import { useFixtureInput } from "./cosmos-playground"
+import { FixtureWrapper } from "./FixtureWrapper"
 
 export default function TableShowcase() {
+  const [caption] = useFixtureInput("tableInvoiceCaption", "A list of recent invoices.")
+  const [footerLabel] = useFixtureInput("tableFooterTotalLabel", "Total")
+  const [footerAmount] = useFixtureInput("tableFooterTotalAmount", "$1,200.00")
+
   const invoices = [
     {
-      invoice: 'INV001',
-      paymentStatus: 'Paid',
-      totalAmount: '$250.00',
-      paymentMethod: 'Credit Card',
+      invoice: "INV001",
+      paymentStatus: "Paid",
+      totalAmount: "$250.00",
+      paymentMethod: "Credit Card",
     },
     {
-      invoice: 'INV002',
-      paymentStatus: 'Pending',
-      totalAmount: '$150.00',
-      paymentMethod: 'PayPal',
+      invoice: "INV002",
+      paymentStatus: "Pending",
+      totalAmount: "$150.00",
+      paymentMethod: "PayPal",
     },
     {
-      invoice: 'INV003',
-      paymentStatus: 'Unpaid',
-      totalAmount: '$350.00',
-      paymentMethod: 'Bank Transfer',
+      invoice: "INV003",
+      paymentStatus: "Unpaid",
+      totalAmount: "$350.00",
+      paymentMethod: "Bank Transfer",
     },
     {
-      invoice: 'INV004',
-      paymentStatus: 'Paid',
-      totalAmount: '$450.00',
-      paymentMethod: 'Credit Card',
+      invoice: "INV004",
+      paymentStatus: "Paid",
+      totalAmount: "$450.00",
+      paymentMethod: "Credit Card",
     },
   ]
 
   return (
     <FixtureWrapper>
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold">Basic Table</h2>
+        <h2 className="text-2xl font-bold">Live controls</h2>
+        <p className="text-sm text-muted-foreground max-w-xl">Caption and footer labels / total.</p>
         <Table>
-          <TableCaption>A list of recent invoices.</TableCaption>
+          <TableCaption>{caption}</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">Invoice</TableHead>
@@ -65,8 +70,8 @@ export default function TableShowcase() {
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={3}>Total</TableCell>
-              <TableCell className="text-right">$1,200.00</TableCell>
+              <TableCell colSpan={3}>{footerLabel}</TableCell>
+              <TableCell className="text-right">{footerAmount}</TableCell>
             </TableRow>
           </TableFooter>
         </Table>

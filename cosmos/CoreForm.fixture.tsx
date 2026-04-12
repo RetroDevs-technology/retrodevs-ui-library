@@ -1,4 +1,3 @@
-import React from "react"
 import { useForm } from "react-hook-form"
 
 import { Button } from "../src/components/core/button"
@@ -12,6 +11,7 @@ import {
   FormMessage,
 } from "../src/components/core/form"
 import { Input } from "../src/components/core/input"
+import { useFixtureInput } from "./cosmos-playground"
 import { FixtureWrapper } from "./FixtureWrapper"
 
 interface DemoValues {
@@ -22,6 +22,14 @@ export default function CoreFormShowcase() {
   const form = useForm<DemoValues>({
     defaultValues: { username: "" },
   })
+
+  const [fieldLabel] = useFixtureInput("formUsernameLabel", "Username")
+  const [placeholder] = useFixtureInput("formUsernamePlaceholder", "shadcn")
+  const [description] = useFixtureInput(
+    "formUsernameDescription",
+    "This is your public display name.",
+  )
+  const [submitLabel] = useFixtureInput("formSubmitLabel", "Submit")
 
   return (
     <FixtureWrapper title="Form (core)">
@@ -37,16 +45,16 @@ export default function CoreFormShowcase() {
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>{fieldLabel}</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input placeholder={placeholder} {...field} />
                 </FormControl>
-                <FormDescription>This is your public display name.</FormDescription>
+                <FormDescription>{description}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <Button type="submit">{submitLabel}</Button>
         </form>
       </Form>
     </FixtureWrapper>

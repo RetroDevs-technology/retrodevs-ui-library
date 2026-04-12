@@ -1,24 +1,41 @@
-import React, { useState } from 'react'
-import BaseModal from '../src/components/modules/base-modal'
-import { Button } from '../src/components/core/button'
-import { FixtureWrapper } from './FixtureWrapper'
+import { useState } from "react"
+
+import BaseModal from "../src/components/modules/base-modal"
+import { Button } from "../src/components/core/button"
+import { useFixtureInput, useFixtureSelect } from "./cosmos-playground"
+import { FixtureWrapper } from "./FixtureWrapper"
 
 export default function ModalShowcase() {
   const [open, setOpen] = useState(false)
+  const [triggerLabel] = useFixtureInput("modalOpenButtonLabel", "Open Small Modal")
+  const [title] = useFixtureInput("modalTitle", "Small Modal")
+  const [description] = useFixtureInput("modalDescription", "This is a small modal dialog")
+  const [bodyLead] = useFixtureInput(
+    "modalBodyLead",
+    "This is a small modal with default width.",
+  )
+  const [bodyRest] = useFixtureInput("modalBodyRest", "Modal content goes here.")
+  const [size] = useFixtureSelect("modalSize", {
+    options: ["small", "large", "full"],
+    defaultValue: "small",
+  })
 
   return (
     <FixtureWrapper>
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold">Small Modal</h2>
+        <h2 className="text-2xl font-bold">Live controls</h2>
+        <p className="text-sm text-muted-foreground max-w-xl">
+          First modal: trigger, title, description, body, and size (small / large / full).
+        </p>
         <BaseModal
-          trigger={<Button>Open Small Modal</Button>}
-          title="Small Modal"
-          description="This is a small modal dialog"
-          size="small"
+          trigger={<Button type="button">{triggerLabel}</Button>}
+          title={title}
+          description={description}
+          size={size as "small" | "large" | "full"}
         >
           <div className="p-6">
-            <p className="mb-4">This is a small modal with default width.</p>
-            <p>Modal content goes here.</p>
+            <p className="mb-4">{bodyLead}</p>
+            <p>{bodyRest}</p>
           </div>
         </BaseModal>
       </section>
@@ -81,7 +98,9 @@ export default function ModalShowcase() {
       <section className="space-y-4">
         <h2 className="text-2xl font-bold">Controlled Modal</h2>
         <div className="space-y-2">
-          <Button onClick={() => setOpen(true)}>Open Controlled Modal</Button>
+          <Button type="button" onClick={() => setOpen(true)}>
+            Open Controlled Modal
+          </Button>
           <BaseModal
             open={open}
             onClose={setOpen}
@@ -91,7 +110,9 @@ export default function ModalShowcase() {
           >
             <div className="p-6">
               <p className="mb-4">This modal is controlled by React state.</p>
-              <Button onClick={() => setOpen(false)}>Close Modal</Button>
+              <Button type="button" onClick={() => setOpen(false)}>
+                Close Modal
+              </Button>
             </div>
           </BaseModal>
         </div>
@@ -108,7 +129,8 @@ export default function ModalShowcase() {
         >
           <div className="p-6">
             <p className="mb-4">
-              This modal cannot be closed by clicking outside. You must use the close button or ESC key.
+              This modal cannot be closed by clicking outside. You must use the close button or ESC
+              key.
             </p>
             <p>Useful for important confirmations or required actions.</p>
           </div>

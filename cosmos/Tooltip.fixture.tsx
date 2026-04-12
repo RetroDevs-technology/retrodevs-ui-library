@@ -1,15 +1,23 @@
-import React from 'react'
-import BaseTooltip from '../src/components/modules/base-tooltip'
-import { Button } from '../src/components/core/button'
-import { FixtureWrapper } from './FixtureWrapper'
+import BaseTooltip from "../src/components/modules/base-tooltip"
+import { Button } from "../src/components/core/button"
+import { useFixtureInput, useFixtureSelect } from "./cosmos-playground"
+import { FixtureWrapper } from "./FixtureWrapper"
 
 export default function TooltipShowcase() {
+  const [content] = useFixtureInput("tooltipContent", "This is a helpful tooltip")
+  const [triggerLabel] = useFixtureInput("tooltipTriggerLabel", "Hover me")
+  const [side] = useFixtureSelect("tooltipSide", {
+    options: ["top", "right", "bottom", "left"],
+    defaultValue: "top",
+  })
+
   return (
     <FixtureWrapper>
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold">Default Tooltip</h2>
-        <BaseTooltip content="This is a helpful tooltip">
-          <Button>Hover me</Button>
+        <h2 className="text-2xl font-bold">Live controls</h2>
+        <p className="text-sm text-muted-foreground max-w-xl">Tooltip content, trigger label, and side.</p>
+        <BaseTooltip content={content} side={side as "top" | "right" | "bottom" | "left"}>
+          <Button type="button">{triggerLabel}</Button>
         </BaseTooltip>
       </section>
 

@@ -1,18 +1,22 @@
-import React from 'react'
-import { BasePopover } from '../src/components/modules/base-popover'
-import { Button } from '../src/components/core/button'
-import { FixtureWrapper } from './FixtureWrapper'
+import { BasePopover } from "../src/components/modules/base-popover"
+import { Button } from "../src/components/core/button"
+import { useFixtureInput } from "./cosmos-playground"
+import { FixtureWrapper } from "./FixtureWrapper"
 
 export default function PopoverShowcase() {
+  const [triggerLabel] = useFixtureInput("popoverTriggerLabel", "Open Popover")
+  const [body] = useFixtureInput("popoverBodyText", "This is popover content.")
+
   return (
     <FixtureWrapper>
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold">Basic Popover</h2>
+        <h2 className="text-2xl font-bold">Live controls</h2>
+        <p className="text-sm text-muted-foreground max-w-xl">Trigger label and body copy.</p>
         <BasePopover
-          trigger={<Button>Open Popover</Button>}
+          trigger={<Button type="button">{triggerLabel}</Button>}
           content={
             <div className="p-4">
-              <p className="text-sm">This is popover content.</p>
+              <p className="text-sm">{body}</p>
             </div>
           }
         />
@@ -24,15 +28,9 @@ export default function PopoverShowcase() {
           trigger={<Button variant="outline">Show Options</Button>}
           content={
             <div className="p-2">
-              <div className="px-3 py-2 hover:bg-accent cursor-pointer rounded-sm">
-                Option 1
-              </div>
-              <div className="px-3 py-2 hover:bg-accent cursor-pointer rounded-sm">
-                Option 2
-              </div>
-              <div className="px-3 py-2 hover:bg-accent cursor-pointer rounded-sm">
-                Option 3
-              </div>
+              <div className="px-3 py-2 hover:bg-accent cursor-pointer rounded-sm">Option 1</div>
+              <div className="px-3 py-2 hover:bg-accent cursor-pointer rounded-sm">Option 2</div>
+              <div className="px-3 py-2 hover:bg-accent cursor-pointer rounded-sm">Option 3</div>
             </div>
           }
         />

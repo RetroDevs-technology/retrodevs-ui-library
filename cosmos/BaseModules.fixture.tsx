@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Settings, User } from "lucide-react"
 
+import { useFixtureInput } from "./cosmos-playground"
 import BaseAvatar from "../src/components/modules/base-avatar"
 import { BaseCard } from "../src/components/modules/base-card"
 import { BaseCarousel } from "../src/components/modules/base-carousel"
@@ -32,14 +33,28 @@ const tabs: ITabProps[] = [
 
 export default function BaseModulesShowcase() {
   const [active, setActive] = useState<string | undefined>("profile")
+  const [showCarouselIndicators] = useFixtureInput("carouselShowIndicators", true)
+  const [showCarouselNavigation] = useFixtureInput("carouselShowNavigation", true)
+  const [popoverTriggerLabel] = useFixtureInput("basePopoverTriggerLabel", "Open popover")
+  const [popoverBody] = useFixtureInput(
+    "basePopoverBody",
+    "Popover content from the module template.",
+  )
+  const [selectPlaceholder] = useFixtureInput("baseSelectPlaceholder", "Select option")
+  const [dropdownTriggerLabel] = useFixtureInput("baseDropdownTriggerLabel", "Open menu")
+  const [tooltipContent] = useFixtureInput("baseTooltipContent", "Tooltip from module template")
+  const [tooltipTriggerLabel] = useFixtureInput("baseTooltipTriggerLabel", "Hover me")
 
   return (
     <FixtureWrapper title="Module templates (Base*)">
+      <p className="text-sm text-muted-foreground max-w-2xl">
+        Fixture panel: popover/select/dropdown/tooltip copy, plus carousel indicators and navigation.
+      </p>
       <section className="space-y-4">
         <h2 className="text-lg font-semibold">BasePopover</h2>
         <BasePopover
-          trigger={<Button type="button">Open popover</Button>}
-          content={<div className="p-4 text-sm w-56">Popover content from the module template.</div>}
+          trigger={<Button type="button">{popoverTriggerLabel}</Button>}
+          content={<div className="p-4 text-sm w-56">{popoverBody}</div>}
         />
       </section>
 
@@ -47,7 +62,7 @@ export default function BaseModulesShowcase() {
         <h2 className="text-lg font-semibold">BaseSelect</h2>
         <div className="max-w-xs">
           <BaseSelect
-            placeholder="Select option"
+            placeholder={selectPlaceholder}
             items={[
               { value: "a", label: "Option A" },
               { value: "b", label: "Option B" },
@@ -61,7 +76,7 @@ export default function BaseModulesShowcase() {
       <section className="space-y-4">
         <h2 className="text-lg font-semibold">BaseDropdown</h2>
         <BaseDropdown
-          trigger={<Button type="button">Open menu</Button>}
+          trigger={<Button type="button">{dropdownTriggerLabel}</Button>}
           items={[
             { label: "Profile", onClick: () => undefined, icon: <User className="size-4" /> },
             { label: "Settings", onClick: () => undefined, icon: <Settings className="size-4" /> },
@@ -71,9 +86,9 @@ export default function BaseModulesShowcase() {
 
       <section className="space-y-4">
         <h2 className="text-lg font-semibold">BaseTooltip</h2>
-        <BaseTooltip content="Tooltip from module template">
+        <BaseTooltip content={tooltipContent}>
           <Button type="button" variant="outline">
-            Hover me
+            {tooltipTriggerLabel}
           </Button>
         </BaseTooltip>
       </section>
@@ -104,6 +119,10 @@ export default function BaseModulesShowcase() {
 
       <section className="space-y-4">
         <h2 className="text-lg font-semibold">BaseCarousel</h2>
+        <p className="text-sm text-muted-foreground max-w-xl">
+          Toggle <code className="text-foreground">carouselShowIndicators</code> and{" "}
+          <code className="text-foreground">carouselShowNavigation</code> in the fixture panel.
+        </p>
         <div className="max-w-md">
           <BaseCarousel
             items={[
@@ -111,8 +130,8 @@ export default function BaseModulesShowcase() {
               { id: "2", content: <div className="p-8 bg-muted rounded-md text-center">Slide 2</div> },
               { id: "3", content: <div className="p-8 bg-muted rounded-md text-center">Slide 3</div> },
             ]}
-            showIndicators
-            showNavigation
+            showIndicators={showCarouselIndicators}
+            showNavigation={showCarouselNavigation}
           />
         </div>
       </section>

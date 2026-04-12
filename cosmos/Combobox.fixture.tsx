@@ -1,5 +1,3 @@
-import React from "react"
-
 import {
   Combobox,
   ComboboxEmpty,
@@ -11,6 +9,7 @@ import {
   ComboboxPositioner,
   ComboboxTrigger,
 } from "../src/components/core/combobox"
+import { useFixtureInput } from "./cosmos-playground"
 import { FixtureWrapper } from "./FixtureWrapper"
 
 const items = [
@@ -21,18 +20,21 @@ const items = [
 ]
 
 export default function ComboboxShowcase() {
+  const [placeholder] = useFixtureInput("comboboxInputPlaceholder", "Pick a framework…")
+  const [emptyText] = useFixtureInput("comboboxEmptyText", "No matches.")
+
   return (
     <FixtureWrapper title="Combobox (core)">
       <Combobox items={items} defaultValue={null}>
         <div className="flex w-80 max-w-full items-center gap-1">
-          <ComboboxInput placeholder="Pick a framework…" className="flex-1" />
+          <ComboboxInput placeholder={placeholder} className="flex-1" />
           <ComboboxTrigger />
         </div>
         <ComboboxPortal>
           <ComboboxPositioner sideOffset={6}>
             <ComboboxPopup>
               <ComboboxList>
-                <ComboboxEmpty>No matches.</ComboboxEmpty>
+                <ComboboxEmpty>{emptyText}</ComboboxEmpty>
                 {items.map((item) => (
                   <ComboboxItem key={item.value} value={item}>
                     {item.label}

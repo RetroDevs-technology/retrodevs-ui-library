@@ -1,11 +1,26 @@
-import React from 'react'
-import { Textarea } from '../src/components/core/textarea'
-import { Label } from '../src/components/core/label'
-import { FixtureWrapper } from './FixtureWrapper'
+import { Textarea } from "../src/components/core/textarea"
+import { Label } from "../src/components/core/label"
+import { useFixtureInput, useFixtureSelect } from "./cosmos-playground"
+import { FixtureWrapper } from "./FixtureWrapper"
 
 export default function TextareaShowcase() {
+  const [placeholder] = useFixtureInput("textareaPlaceholder", "Enter your message...")
+  const [disabled] = useFixtureInput("textareaDisabled", false)
+  const [minHeight] = useFixtureSelect("textareaMinHeightClass", {
+    options: ["min-h-16", "min-h-32", "min-h-48"],
+    defaultValue: "min-h-32",
+  })
+
   return (
     <FixtureWrapper>
+      <section className="space-y-4">
+        <h2 className="text-2xl font-bold">Live controls</h2>
+        <p className="text-sm text-muted-foreground max-w-xl">
+          Placeholder, disabled, and min-height preset for the demo field.
+        </p>
+        <Textarea className={minHeight} placeholder={placeholder} disabled={disabled} />
+      </section>
+
       <section className="space-y-4">
         <h2 className="text-2xl font-bold">Default Textarea</h2>
         <Textarea placeholder="Enter your message..." />

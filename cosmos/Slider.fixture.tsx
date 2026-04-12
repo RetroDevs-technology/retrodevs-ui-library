@@ -1,33 +1,55 @@
-import React, { useState } from 'react'
-import { Slider, SliderControl, SliderTrack, SliderIndicator, SliderThumb, SliderValue } from '../src/components/core/slider'
-import { Label } from '../src/components/core/label'
-import { FixtureWrapper } from './FixtureWrapper'
+import { useState } from "react"
+
+import { Label } from "../src/components/core/label"
+import {
+  Slider,
+  SliderControl,
+  SliderIndicator,
+  SliderThumb,
+  SliderTrack,
+  SliderValue,
+} from "../src/components/core/slider"
+import { useFixtureInput } from "./cosmos-playground"
+import { FixtureWrapper } from "./FixtureWrapper"
 
 export default function SliderShowcase() {
-  const [singleValue, setSingleValue] = useState(50)
   const [rangeValue, setRangeValue] = useState<number[]>([25, 75])
+  const [volumeLabel] = useFixtureInput("sliderVolumeLabel", "Volume")
+  const [maxVolume] = useFixtureInput("sliderVolumeMax", 100)
+  const [singleValue, setSingleValue] = useFixtureInput("sliderVolumeValue", 50)
+  const max =
+    typeof maxVolume === "number" && !Number.isNaN(maxVolume)
+      ? Math.min(200, Math.max(10, maxVolume))
+      : 100
+  const vol =
+    typeof singleValue === "number" && !Number.isNaN(singleValue)
+      ? Math.min(max, Math.max(0, singleValue))
+      : 50
 
   return (
     <FixtureWrapper>
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold">Single Value Slider</h2>
+        <h2 className="text-2xl font-bold">Live controls</h2>
+        <p className="text-sm text-muted-foreground max-w-xl">
+          Label, max, and current value (fixture panel); drag the thumb to update the value input.
+        </p>
         <div className="space-y-2">
-          <Label>Volume: {singleValue}</Label>
+          <Label>
+            {volumeLabel}: {vol}
+          </Label>
           <Slider
-            value={singleValue}
+            value={vol}
             onValueChange={(value) => {
-              if (typeof value === 'number') {
-                setSingleValue(value)
-              }
+              if (typeof value === "number") setSingleValue(value)
             }}
             min={0}
-            max={100}
+            max={max}
             step={1}
           >
             <SliderControl>
               <SliderTrack>
                 <SliderIndicator />
-                <SliderThumb aria-label="Volume" />
+                <SliderThumb aria-label={volumeLabel} />
               </SliderTrack>
             </SliderControl>
           </Slider>
@@ -63,12 +85,7 @@ export default function SliderShowcase() {
       <section className="space-y-4">
         <h2 className="text-2xl font-bold">With Value Display</h2>
         <div className="space-y-2">
-          <Slider
-            defaultValue={75}
-            min={0}
-            max={100}
-            step={5}
-          >
+          <Slider defaultValue={75} min={0} max={100} step={5}>
             <SliderValue />
             <SliderControl>
               <SliderTrack>
@@ -84,12 +101,7 @@ export default function SliderShowcase() {
         <h2 className="text-2xl font-bold">Disabled Slider</h2>
         <div className="space-y-2">
           <Label>Disabled</Label>
-          <Slider
-            defaultValue={50}
-            disabled
-            min={0}
-            max={100}
-          >
+          <Slider defaultValue={50} disabled min={0} max={100}>
             <SliderControl>
               <SliderTrack>
                 <SliderIndicator />
@@ -105,13 +117,7 @@ export default function SliderShowcase() {
         <div className="flex items-center gap-8">
           <div className="space-y-2">
             <Label>Vertical</Label>
-            <Slider
-              defaultValue={50}
-              orientation="vertical"
-              min={0}
-              max={100}
-              className="h-[200px]"
-            >
+            <Slider defaultValue={50} orientation="vertical" min={0} max={100} className="h-[200px]">
               <SliderControl>
                 <SliderTrack>
                   <SliderIndicator />

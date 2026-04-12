@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 
 import { Button, buttonVariants } from "../src/components/core/button"
 import {
@@ -10,10 +10,25 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../src/components/core/dialog"
+import { useFixtureInput } from "./cosmos-playground"
 import { FixtureWrapper } from "./FixtureWrapper"
 
 export default function CoreDialogShowcase() {
   const [open, setOpen] = useState(false)
+  const [triggerLabel] = useFixtureInput("dialogTriggerLabel", "Open dialog")
+  const [title] = useFixtureInput("dialogTitle", "Edit profile")
+  const [description] = useFixtureInput(
+    "dialogDescription",
+    "Make changes here. Click save when you're done.",
+  )
+  const [body] = useFixtureInput("dialogBodyText", "Dialog body content.")
+  const [cancelLabel] = useFixtureInput("dialogCancelLabel", "Cancel")
+  const [saveLabel] = useFixtureInput("dialogSaveLabel", "Save")
+  const [controlledTitle] = useFixtureInput("dialogControlledTitle", "Headless close")
+  const [controlledDescription] = useFixtureInput(
+    "dialogControlledDescription",
+    "This dialog hides the built-in close icon.",
+  )
 
   return (
     <FixtureWrapper title="Dialog (core)">
@@ -21,21 +36,19 @@ export default function CoreDialogShowcase() {
         <h2 className="text-lg font-semibold">With trigger</h2>
         <Dialog>
           <DialogTrigger type="button" className={buttonVariants({ variant: "default" })}>
-            Open dialog
+            {triggerLabel}
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Edit profile</DialogTitle>
-              <DialogDescription>
-                Make changes here. Click save when you&apos;re done.
-              </DialogDescription>
+              <DialogTitle>{title}</DialogTitle>
+              <DialogDescription>{description}</DialogDescription>
             </DialogHeader>
-            <p className="text-sm text-muted-foreground">Dialog body content.</p>
+            <p className="text-sm text-muted-foreground">{body}</p>
             <DialogFooter>
               <Button type="button" variant="outline">
-                Cancel
+                {cancelLabel}
               </Button>
-              <Button type="button">Save</Button>
+              <Button type="button">{saveLabel}</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -49,8 +62,8 @@ export default function CoreDialogShowcase() {
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogContent showCloseButton={false}>
             <DialogHeader>
-              <DialogTitle>Headless close</DialogTitle>
-              <DialogDescription>This dialog hides the built-in close icon.</DialogDescription>
+              <DialogTitle>{controlledTitle}</DialogTitle>
+              <DialogDescription>{controlledDescription}</DialogDescription>
             </DialogHeader>
             <Button type="button" onClick={() => setOpen(false)}>
               Close

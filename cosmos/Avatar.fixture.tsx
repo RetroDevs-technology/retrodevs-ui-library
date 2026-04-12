@@ -1,25 +1,29 @@
-import React from 'react'
-import BaseAvatar from '../src/components/modules/base-avatar'
-import { FixtureWrapper } from './FixtureWrapper'
+import BaseAvatar from "../src/components/modules/base-avatar"
+import { useFixtureInput, useFixtureSelect } from "./cosmos-playground"
+import { FixtureWrapper } from "./FixtureWrapper"
 
 export default function AvatarShowcase() {
+  const [imageUrl] = useFixtureInput("avatarImageUrl", "https://github.com/shadcn.png")
+  const [alt] = useFixtureInput("avatarAltText", "User profile")
+  const [size] = useFixtureSelect("avatarSize", {
+    options: ["sm", "md", "lg", "xl", "huge"],
+    defaultValue: "md",
+  })
+  const [useImage] = useFixtureInput("avatarShowImage", true)
+  const [initials] = useFixtureInput("avatarFallbackInitials", "JD")
+
   return (
     <FixtureWrapper>
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold">With Image</h2>
+        <h2 className="text-2xl font-bold">Live controls</h2>
+        <p className="text-sm text-muted-foreground max-w-xl">
+          Toggle image vs fallback, URL, alt, size, and fallback initials (when no image).
+        </p>
         <BaseAvatar
-          src="https://github.com/shadcn.png"
-          alt="User profile"
-          size="md"
-        />
-      </section>
-
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">Fallback Only</h2>
-        <BaseAvatar
-          src={null}
-          alt="User"
-          size="md"
+          src={useImage ? imageUrl : null}
+          alt={alt}
+          size={size as "sm" | "md" | "lg" | "xl" | "huge"}
+          fallback={<span>{initials}</span>}
         />
       </section>
 
@@ -32,15 +36,6 @@ export default function AvatarShowcase() {
           <BaseAvatar size="xl" />
           <BaseAvatar size="huge" />
         </div>
-      </section>
-
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">Custom Fallback</h2>
-        <BaseAvatar
-          src={null}
-          fallback={<span>JD</span>}
-          size="md"
-        />
       </section>
     </FixtureWrapper>
   )
