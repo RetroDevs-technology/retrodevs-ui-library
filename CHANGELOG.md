@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-04-12
+
+### Added
+- **React Cosmos fixture controls**: `cosmos/cosmos-playground.ts` re-exports `useFixtureInput`, `useFixtureSelect`, `useFixtureState`, and `useValue` from `react-cosmos/client` for interactive props in the playground UI
+- **Fixture inputs on all Cosmos fixtures**: each `cosmos/*.fixture.tsx` exposes namespaced controls (labels, variants, booleans, etc.) aligned with the component under test
+- **`cosmos/tsconfig.json`**: extends the root config with `noEmit: true` so fixtures typecheck with `jsx: react-jsx` and correct path aliases alongside `src/`
+- **`BaseModules.fixture.tsx`**: Cosmos coverage for module templates (`BasePopover`, `BaseSelect`, `BaseDropdown`, `BaseTooltip`, `BaseAvatar`, `BaseCard`, `BaseTab`, `BaseCarousel`) with fixture inputs where relevant
+
+### Changed
+- Root `tsconfig.json` no longer lists `cosmos` under `exclude` (fixtures are owned by `cosmos/tsconfig.json`)
+- `FixtureWrapper` JSDoc notes using `cosmos-playground` hooks for editable Cosmos UI state
+- ESLint continues to lint `cosmos/**` (not ignored)
+
+### Fixed
+- Cosmos fixtures no longer typecheck as orphan scripts (resolves “`React` refers to a UMD global” when JSX was assumed to be classic transform)
+- `Calendar.fixture.tsx`: range selection state typed as `DateRange` from `react-day-picker`
+- `LayoutComposites.fixture.tsx`: `Boom` demo component return type `never` for valid JSX typing
+
 ## [0.4.0] - 2026-01-26
 
 ### Changed
@@ -187,7 +205,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Dark mode support via `next-themes`
 - JSDoc documentation for IntelliSense support
 
-[Unreleased]: https://github.com/greg_retro/ui-library/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/greg_retro/ui-library/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/greg_retro/ui-library/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/greg_retro/ui-library/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/greg_retro/ui-library/compare/v0.2.1...v0.3.1
 [0.2.1]: https://github.com/greg_retro/ui-library/compare/v0.1.4...v0.2.1
