@@ -7,29 +7,6 @@ const manyOptions = Array.from({ length: 100 }, (_, i) => ({
   label: `Option ${i + 1}`,
 }))
 
-const groupedOptions = [
-  {
-    value: 'fruits',
-    label: 'Fruits',
-    items: [
-      { value: 'apple', label: 'Apple' },
-      { value: 'banana', label: 'Banana' },
-      { value: 'orange', label: 'Orange' },
-      { value: 'grape', label: 'Grape' },
-    ],
-  },
-  {
-    value: 'vegetables',
-    label: 'Vegetables',
-    items: [
-      { value: 'carrot', label: 'Carrot' },
-      { value: 'lettuce', label: 'Lettuce' },
-      { value: 'tomato', label: 'Tomato' },
-      { value: 'cucumber', label: 'Cucumber' },
-    ],
-  },
-]
-
 export default function SearchableSelectShowcase() {
   const [basicValue, setBasicValue] = useState<string | undefined>()
   const [manyValue, setManyValue] = useState<string | undefined>()

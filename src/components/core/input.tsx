@@ -1,40 +1,45 @@
 import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+const inputVariants = cva(
+  "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground border-input flex w-full min-w-0 border bg-transparent shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+  {
+    variants: {
+      fieldSize: {
+        default:
+          "h-9 rounded-md px-3 py-1 text-base md:text-sm dark:bg-input/30",
+        comfortable:
+          "h-11 rounded-lg px-3 py-2.5 text-xs font-normal md:text-sm bg-background hover:border-primary/50 transition-all duration-150 active:bg-primary/5",
+      },
+    },
+    defaultVariants: {
+      fieldSize: "default",
+    },
+  }
+)
+
+export type InputVariants = VariantProps<typeof inputVariants>
+
+export interface InputProps extends React.ComponentProps<"input">, InputVariants {}
+
 /**
  * Input component for text, email, password, and other input types.
- * Supports all standard input HTML attributes with consistent styling.
- *
- * @param props - Input component props (extends React.ComponentProps<"input">)
- * @param props.className - Additional CSS classes
- * @param props.type - Input type (text, email, password, number, etc.)
- * @returns Input element
- *
- * @example
- * ```tsx
- * <Input type="email" placeholder="Enter your email" />
- * <Input type="password" placeholder="Password" />
- * ```
  */
-const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
-  ({ className, type, ...props }, ref) => {
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, fieldSize, ...props }, ref) => {
     return (
       <input
         type={type}
         data-slot="input"
         ref={ref}
-        className={cn(
-          "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-          "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-          "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
-          className
-        )}
+        className={cn(inputVariants({ fieldSize }), className)}
         {...props}
       />
     )
   }
 )
-Input.displayName = 'Input'
+Input.displayName = "Input"
 
-export { Input }
+export { Input, inputVariants }

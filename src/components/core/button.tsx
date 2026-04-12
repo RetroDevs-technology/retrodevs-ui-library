@@ -22,11 +22,19 @@ const buttonVariants = cva(
         default: 'bg-primary text-primary-foreground shadow-xs hover:bg-primary/90',
         destructive:
           'bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40',
+        destructiveMuted:
+          'bg-background text-destructive py-2.5 px-5 text-sm font-medium border border-destructive/20 rounded-lg hover:bg-destructive/10 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-background',
         outline:
           'border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
+        outlineBold:
+          'py-2.5 px-5 h-10 rounded-lg shadow-xs bg-background text-sm font-bold hover:text-accent-foreground dark:bg-input/30 dark:border-border dark:hover:bg-input/50 border border-border',
+        outline_pagination:
+          'py-2.5 px-5 h-10 rounded-lg border border-primary bg-background text-sm font-bold hover:text-accent-foreground dark:bg-input/30 dark:border-primary dark:hover:bg-input/50',
         secondary: 'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
         link: 'text-primary underline-offset-4 hover:underline',
+        blue: 'py-3 px-2.5 rounded-xl hover:bg-primary/90 h-[43px] shadow-md bg-primary text-primary-foreground text-sm font-bold',
+        black: 'py-3 px-2.5 rounded-xl h-10 bg-foreground text-sm font-medium text-background',
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',

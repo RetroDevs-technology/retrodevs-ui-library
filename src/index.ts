@@ -23,5 +23,14 @@ export {
 // Composite Components - Complex multi-part features
 export * from './components/composites'
 
+// Adapter patterns (inject services / data from the host app)
+export * from './components/adapters'
+
+// Motion / animation helpers
+export * from './components/animations'
+
+// Hooks
+export * from './lib/hooks'
+
 // Utilities
 export { cn } from './lib/utils'
