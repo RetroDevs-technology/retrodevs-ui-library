@@ -45,7 +45,7 @@ export function PeriodSelect({
       onChange={handleValueChange}
       placeholder=""
       items={items}
-      width={80}
+      style={{ minWidth: 80 }}
       triggerClassName="w-[80px]"
       contentClassName="max-h-[200px]"
       disabled={disabled}

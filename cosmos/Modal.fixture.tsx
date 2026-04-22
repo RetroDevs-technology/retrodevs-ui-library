@@ -16,7 +16,7 @@ export default function ModalShowcase() {
   )
   const [bodyRest] = useFixtureInput("modalBodyRest", "Modal content goes here.")
   const [size] = useFixtureSelect("modalSize", {
-    options: ["small", "large", "full"],
+    options: ["small", "large", "xl", "full"],
     defaultValue: "small",
   })
 
@@ -25,13 +25,13 @@ export default function ModalShowcase() {
       <section className="space-y-4">
         <h2 className="text-2xl font-bold">Live controls</h2>
         <p className="text-sm text-muted-foreground max-w-xl">
-          First modal: trigger, title, description, body, and size (small / large / full).
+          First modal: trigger, title, description, body, and size (small / large / xl / full).
         </p>
         <BaseModal
           trigger={<Button type="button">{triggerLabel}</Button>}
           title={title}
           description={description}
-          size={size as "small" | "large" | "full"}
+          size={size as "small" | "large" | "xl" | "full"}
         >
           <div className="p-6">
             <p className="mb-4">{bodyLead}</p>

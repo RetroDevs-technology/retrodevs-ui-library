@@ -1,14 +1,14 @@
 /**
  * A reusable dropdown menu component built on top of shadcn/ui DropdownMenu.
- * Supports click actions, icons, and custom positioning.
- * Navigation should be handled by consumers in onClick handlers.
+ * Supports navigation links, click actions, icons, and custom positioning.
+ * Automatically handles route changes and cleanup.
  *
  * @example
  * ```tsx
  * <BaseDropdown
  *   trigger={<Button>Menu</Button>}
  *   items={[
- *     { label: 'Profile', onClick: () => navigate('/profile'), icon: <UserIcon /> },
+ *     { label: 'Profile', to: '/profile', icon: <UserIcon /> },
  *     { label: 'Settings', onClick: () => handleSettings(), icon: <SettingsIcon /> },
  *     { label: 'Logout', onClick: () => handleLogout(), icon: <LogoutIcon /> }
  *   ]}
@@ -18,55 +18,45 @@
  * />
  * ```
  */
-"use client";
+"use client"
 
-import * as React from "react";
-import { type ReactNode, useEffect, useState } from "react";
+import { cn } from "@/lib/utils"
+import * as React from "react"
+import { type ReactNode, useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../core/dropdown-menu";
-import { cn } from "@/lib/utils";
+} from "../core/dropdown-menu"
 
 interface DropdownItemProps {
-  /** Click handler for menu items */
-  onClick?: () => void;
+  /** Optional route path for navigation items */
+  to?: string
+  /** Click handler for action items */
+  onClick?: () => void
   /** Optional icon to display before the label */
-  icon?: ReactNode;
+  icon?: ReactNode
   /** Display text for the menu item */
-  label: string;
+  label: string
 }
 
 interface CustomDropdownProps {
   /** The trigger element that opens the dropdown (usually a button) */
-  trigger: ReactNode;
+  trigger: ReactNode
   /** Array of menu items to display */
-  items: DropdownItemProps[];
+  items: DropdownItemProps[]
   /** Additional CSS classes for the dropdown content */
-  className?: string;
+  className?: string
   /** Horizontal alignment of the dropdown relative to the trigger */
-  align?: "start" | "center" | "end";
+  align?: "start" | "center" | "end"
   /** Position of the dropdown relative to the trigger */
-  side?: "top" | "right" | "bottom" | "left";
+  side?: "top" | "right" | "bottom" | "left"
   /** Optional header content to display above the menu items */
-  header?: ReactNode;
+  header?: ReactNode
 }
 
-/**
- * Base dropdown component that provides a consistent way to display dropdown menus.
- * Supports click actions, icons, custom positioning, and optional header content.
- *
- * @param props - BaseDropdown component props
- * @param props.trigger - Element that opens the dropdown
- * @param props.items - Array of menu items with labels, icons, and click handlers
- * @param props.className - Additional CSS classes
- * @param props.align - Horizontal alignment (default: "end")
- * @param props.side - Position relative to trigger (default: "bottom")
- * @param props.header - Optional header content
- * @returns Dropdown menu component
- */
 function BaseDropdown({
   trigger,
   items,
@@ -75,52 +65,79 @@ function BaseDropdown({
   side = "bottom",
   header,
 }: CustomDropdownProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
-      setIsOpen(false);
-    };
-  }, []);
+      setIsOpen(false)
+    }
+  }, [])
 
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setIsOpen(false)
+    }
+
+    window.addEventListener("popstate", handleRouteChange)
+    return () => window.removeEventListener("popstate", handleRouteChange)
+  }, [])
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-      <DropdownMenuTrigger render={React.isValidElement(trigger) ? trigger : <button>{trigger}</button>} />
+      <DropdownMenuTrigger asChild>
+        {React.isValidElement(trigger) ? trigger : <button type="button">{trigger}</button>}
+      </DropdownMenuTrigger>
       <DropdownMenuContent
-        className={cn("py-2 rounded-lg border-border bg-popover", className)}
+        className={cn(
+          ` py-2 rounded-lg min-w-[150px] bg-medium-gray text-white border-none`,
+          className,
+        )}
         align={align}
-        side={side}
-      >
+        side={side}>
         {header && (
-          <div className="flex flex-col justify-center items-center px-4 pb-4">
-            {header}
-          </div>
+          <div className="flex flex-col justify-center items-center px-4 pb-4">{header}</div>
         )}
 
         {items.map((item, index) => (
           <DropdownMenuItem
             key={item.label}
             className={cn(
-              "px-2 py-2 cursor-pointer text-popover-foreground rounded-none",
-              index !== items.length - 1 ? "border-b border-border" : ""
+              `px-2 py-2 cursor-pointer  w-full text-white min-w-[150px] rounded-none`,
+              index !== items.length - 1 ? "border-b border-medium-gray" : "",
             )}
             onClick={(event) => {
-              event.preventDefault();
-              setIsOpen(false);
-              item.onClick?.();
-            }}
-          >
-            <div className="flex items-center w-full text-base">
-              {item.icon && <span className="mr-3">{item.icon}</span>}
-              {item.label}
-            </div>
+              event.preventDefault()
+              setIsOpen(false)
+            }}>
+            {item.to ? (
+              <Link
+                to={item.to}
+                className="flex items-center w-full text-base font-input-mono  font-light"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setIsOpen(false)
+                }}>
+                {item.icon && <span className="mr-3">{item.icon}</span>}
+                {item.label}
+              </Link>
+            ) : (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setIsOpen(false)
+                  item.onClick?.()
+                }}
+                className="flex items-center w-full text-base font-input-mono font-light">
+                {item.icon && <span className="mr-3">{item.icon}</span>}
+                {item.label}
+              </button>
+            )}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }
 
-export default BaseDropdown;
+export default BaseDropdown

@@ -1,91 +1,39 @@
-import * as React from "react"
-import { Avatar } from "@base-ui/react/avatar"
+import * as AvatarPrimitive from "@radix-ui/react-avatar"
+import type * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-/**
- * Avatar container component.
- * Wraps AvatarImage and AvatarFallback to display user avatars.
- *
- * @param props - Avatar component props (extends React.ComponentProps<typeof AvatarPrimitive.Root>)
- * @param props.className - Additional CSS classes
- * @returns Avatar root element
- *
- * @example
- * ```tsx
- * <Avatar>
- *   <AvatarImage src="/avatar.jpg" alt="User" />
- *   <AvatarFallback>JD</AvatarFallback>
- * </Avatar>
- * ```
- */
-const AvatarRoot = React.forwardRef<
-  HTMLSpanElement,
-  React.ComponentProps<typeof Avatar.Root>
->(({ className, ...props }, ref) => {
+function Avatar({ className, ...props }: React.ComponentProps<typeof AvatarPrimitive.Root>) {
   return (
-    <Avatar.Root
-      ref={ref}
+    <AvatarPrimitive.Root
       data-slot="avatar"
-      className={cn(
-        "relative flex size-8 shrink-0 overflow-hidden rounded-full",
-        className
-      )}
+      className={cn("relative flex size-8 shrink-0 overflow-hidden rounded-full", className)}
       {...props}
     />
   )
-})
-AvatarRoot.displayName = "Avatar"
+}
 
-/**
- * Avatar image component.
- * Displays the user's avatar image with automatic fallback handling.
- *
- * @param props - AvatarImage component props (extends React.ComponentProps<typeof Avatar.Image>)
- * @param props.className - Additional CSS classes
- * @param props.src - Image source URL
- * @param props.alt - Alternative text for the image
- * @returns Avatar image element
- */
-const AvatarImage = React.forwardRef<
-  HTMLImageElement,
-  React.ComponentProps<typeof Avatar.Image>
->(({ className, ...props }, ref) => {
+function AvatarImage({ className, ...props }: React.ComponentProps<typeof AvatarPrimitive.Image>) {
   return (
-    <Avatar.Image
-      ref={ref}
+    <AvatarPrimitive.Image
       data-slot="avatar-image"
       className={cn("aspect-square size-full", className)}
       {...props}
     />
   )
-})
-AvatarImage.displayName = "AvatarImage"
+}
 
-/**
- * Avatar fallback component.
- * Displays when the avatar image fails to load or is not provided.
- *
- * @param props - AvatarFallback component props (extends React.ComponentProps<typeof Avatar.Fallback>)
- * @param props.className - Additional CSS classes
- * @returns Avatar fallback element
- */
-const AvatarFallback = React.forwardRef<
-  HTMLSpanElement,
-  React.ComponentProps<typeof Avatar.Fallback>
->(({ className, ...props }, ref) => {
+function AvatarFallback({
+  className,
+  ...props
+}: React.ComponentProps<typeof AvatarPrimitive.Fallback>) {
   return (
-    <Avatar.Fallback
-      ref={ref}
+    <AvatarPrimitive.Fallback
       data-slot="avatar-fallback"
-      className={cn(
-        "bg-muted flex size-full items-center justify-center rounded-full",
-        className
-      )}
+      className={cn("bg-muted flex size-full items-center justify-center rounded-full", className)}
       {...props}
     />
   )
-})
-AvatarFallback.displayName = "AvatarFallback"
+}
 
-export { AvatarRoot as Avatar, AvatarImage, AvatarFallback }
+export { Avatar, AvatarImage, AvatarFallback }

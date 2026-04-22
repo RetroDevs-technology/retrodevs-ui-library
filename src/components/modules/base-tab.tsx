@@ -1,63 +1,58 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/core/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/core/tabs"
+import { cn } from "@/lib/utils"
+import type { ReactNode } from "react"
 
-/**
- * Base tabs component that provides a clean, standard shadcn/ui tabs interface.
- * Uses standard horizontal tabs layout with proper styling.
- *
- * @param props - BaseTab component props
- * @param props.activeTab - Controlled active tab value
- * @param props.setActiveTab - Callback when active tab changes
- * @param props.tab - Array of tab configurations
- * @returns Tabs component with standard styling
- */
 export function BaseTab({
   activeTab,
   setActiveTab,
   tab,
 }: {
-  activeTab?: string;
-  setActiveTab?: (activeTab: string) => void;
-  tab: ITabProps[];
+  activeTab?: string
+  setActiveTab?: (activeTab: string) => void
+  tab: ITabProps[]
 }) {
   return (
     <Tabs
       defaultValue={tab[0]?.value}
       value={activeTab}
-      onValueChange={setActiveTab}
-    >
-      <TabsList>
+      onValueChange={(value) => setActiveTab?.(String(value))}
+      className="flex flex-row justify-center gap-[307px]">
+      <TabsList className="w-[366px] flex flex-col gap-[45px] h-fit bg-transparent pb-10">
         {tab.map((item) => (
-          <TabsTrigger key={item.name} value={item.value}>
-            {item.image && (
-              <img
-                src={item.image}
-                alt={item.name}
-                className="mr-2 h-4 w-4"
-              />
-            )}
-            {item.name}
+          <TabsTrigger
+            key={item.name}
+            value={item.value}
+            className={cn(
+              "group w-full flex items-center justify-start gap-[7px] font-input-mono text-[15px] uppercase rounded-none tracking-[4%] data-[state=active]:shadow-none transition-all duration-300",
+              {
+                "border-y border-y-white/40 py-[42px]": item.value === "payout",
+              },
+            )}>
+            <img
+              src={item.image}
+              alt={item.name}
+              width={17}
+              height={18}
+              className="opacity-60 group-hover:opacity-100 group-data-[state=active]:opacity-100"
+            />
+            <span className="opacity-60 group-hover:opacity-100 group-data-[state=active]:opacity-100">
+              {item.name}
+            </span>
           </TabsTrigger>
         ))}
       </TabsList>
       {tab.map((item) => (
         <TabsContent key={item.value} value={item.value}>
-          {item.element}
+          <div className="w-full h-fit flex">{item.element}</div>
         </TabsContent>
       ))}
     </Tabs>
-  );
+  )
 }
 
-/**
- * Tab configuration interface.
- */
 export interface ITabProps {
-  /** Tab value identifier */
-  value: "profile" | "payout" | "settings" | "support";
-  /** Optional image source URL for the tab icon */
-  image?: string;
-  /** Display name for the tab */
-  name: string;
-  /** Content element to display when tab is active */
-  element: React.ReactNode;
+  value: "profile" | "payout" | "settings" | "support"
+  image: string
+  name: string
+  element: ReactNode
 }

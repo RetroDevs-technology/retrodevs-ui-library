@@ -1,7 +1,8 @@
-import React from 'react'
-import { ThemeProvider, useTheme } from 'next-themes'
-import { Switch } from '../src/components/core/switch'
-import { Moon, Sun } from 'lucide-react'
+import React from "react"
+import { ThemeProvider, useTheme } from "next-themes"
+import { BrowserRouter } from "react-router-dom"
+import { Switch } from "../src/components/core/switch"
+import { Moon, Sun } from "lucide-react"
 
 interface FixtureWrapperProps {
   title?: string
@@ -55,14 +56,14 @@ function DarkModeToggle() {
  */
 export function FixtureWrapper({ title, children }: FixtureWrapperProps) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
-      <div className="min-h-screen bg-background p-8">
-        <DarkModeToggle />
-        {title && <h1 className="text-3xl font-bold mb-8">{title}</h1>}
-        <div className="space-y-8">
-          {children}
+    <BrowserRouter>
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+        <div className="min-h-screen bg-background p-8">
+          <DarkModeToggle />
+          {title && <h1 className="text-3xl font-bold mb-8">{title}</h1>}
+          <div className="space-y-8">{children}</div>
         </div>
-      </div>
-    </ThemeProvider>
+      </ThemeProvider>
+    </BrowserRouter>
   )
 }

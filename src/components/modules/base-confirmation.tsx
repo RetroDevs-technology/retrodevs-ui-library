@@ -80,10 +80,22 @@ function BaseConfirmation({
 
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogTrigger 
-        render={React.isValidElement(trigger) ? trigger : <button>{trigger}</button>}
-        onClick={handleTriggerClick}
-      />
+      <AlertDialogTrigger asChild>
+        {React.isValidElement(trigger)
+          ? React.cloneElement(trigger as React.ReactElement<{ onClick?: (e: React.MouseEvent) => void }>, {
+              onClick: (e: React.MouseEvent) => {
+                handleTriggerClick(e)
+                const childOnClick = (trigger as React.ReactElement<{ onClick?: (e: React.MouseEvent) => void }>).props
+                  .onClick
+                childOnClick?.(e)
+              },
+            })
+          : (
+              <button type="button" onClick={handleTriggerClick}>
+                {trigger}
+              </button>
+            )}
+      </AlertDialogTrigger>
       <AlertDialogContent className='max-w-lg rounded-md border-border'>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>

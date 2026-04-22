@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react"
 
-import {
-  Progress,
-  ProgressIndicator,
-  ProgressLabel,
-  ProgressTrack,
-  ProgressValue,
-} from "../src/components/core/progress"
+import { Progress } from "../src/components/core/progress"
 import { useFixtureInput } from "./cosmos-playground"
 import { FixtureWrapper } from "./FixtureWrapper"
 
@@ -32,6 +26,8 @@ export default function ProgressShowcase() {
     return () => clearInterval(interval)
   }, [runAnimation])
 
+  const livePercent = runAnimation ? animated : staticValue
+
   return (
     <FixtureWrapper>
       <section className="space-y-4">
@@ -40,118 +36,61 @@ export default function ProgressShowcase() {
           Label, static percent (0–100), and toggle auto-advance for the first bar.
         </p>
         <div className="space-y-2">
-          <Progress value={runAnimation ? animated : staticValue}>
-            <ProgressLabel>{liveLabel}</ProgressLabel>
-            <ProgressTrack>
-              <ProgressIndicator />
-            </ProgressTrack>
-            <ProgressValue />
-          </Progress>
+          <p className="text-sm font-medium">{liveLabel}</p>
+          <Progress value={livePercent} />
+          <p className="text-xs text-muted-foreground">{livePercent}%</p>
         </div>
       </section>
 
       <section className="space-y-4">
         <h2 className="text-2xl font-bold">Progress States</h2>
         <div className="space-y-4">
-          <div className="space-y-2">
-            <Progress value={0}>
-              <ProgressLabel>0% Complete</ProgressLabel>
-              <ProgressTrack>
-                <ProgressIndicator />
-              </ProgressTrack>
-              <ProgressValue />
-            </Progress>
-          </div>
-          <div className="space-y-2">
-            <Progress value={25}>
-              <ProgressLabel>25% Complete</ProgressLabel>
-              <ProgressTrack>
-                <ProgressIndicator />
-              </ProgressTrack>
-              <ProgressValue />
-            </Progress>
-          </div>
-          <div className="space-y-2">
-            <Progress value={50}>
-              <ProgressLabel>50% Complete</ProgressLabel>
-              <ProgressTrack>
-                <ProgressIndicator />
-              </ProgressTrack>
-              <ProgressValue />
-            </Progress>
-          </div>
-          <div className="space-y-2">
-            <Progress value={75}>
-              <ProgressLabel>75% Complete</ProgressLabel>
-              <ProgressTrack>
-                <ProgressIndicator />
-              </ProgressTrack>
-              <ProgressValue />
-            </Progress>
-          </div>
-          <div className="space-y-2">
-            <Progress value={100}>
-              <ProgressLabel>100% Complete</ProgressLabel>
-              <ProgressTrack>
-                <ProgressIndicator />
-              </ProgressTrack>
-              <ProgressValue />
-            </Progress>
-          </div>
+          {[0, 25, 50, 75, 100].map((pct) => (
+            <div key={pct} className="space-y-2">
+              <p className="text-sm font-medium">{pct}% Complete</p>
+              <Progress value={pct} />
+            </div>
+          ))}
         </div>
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold">Indeterminate Progress</h2>
+        <h2 className="text-2xl font-bold">Indeterminate (visual placeholder)</h2>
+        <p className="text-sm text-muted-foreground max-w-xl">
+          Radix <code className="text-xs">Progress</code> is driven by a numeric{" "}
+          <code className="text-xs">value</code>. For a loading strip without a percent, use a separate
+          skeleton or animation.
+        </p>
         <div className="space-y-2">
-          <Progress value={null}>
-            <ProgressLabel>Processing...</ProgressLabel>
-            <ProgressTrack>
-              <ProgressIndicator />
-            </ProgressTrack>
-          </Progress>
+          <p className="text-sm font-medium">Processing…</p>
+          <div className="bg-primary/20 relative h-2 w-full overflow-hidden rounded-full">
+            <div className="bg-[#04AA01] absolute inset-y-0 left-0 w-1/3 animate-pulse rounded-full" />
+          </div>
         </div>
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold">Custom Sizes</h2>
+        <h2 className="text-2xl font-bold">Custom track height</h2>
         <div className="space-y-4">
           <div className="space-y-2">
-            <Progress value={60}>
-              <ProgressLabel>Small</ProgressLabel>
-              <ProgressTrack className="h-1">
-                <ProgressIndicator />
-              </ProgressTrack>
-            </Progress>
+            <p className="text-sm font-medium">Small</p>
+            <Progress value={60} className="h-1" />
           </div>
           <div className="space-y-2">
-            <Progress value={60}>
-              <ProgressLabel>Default</ProgressLabel>
-              <ProgressTrack>
-                <ProgressIndicator />
-              </ProgressTrack>
-            </Progress>
+            <p className="text-sm font-medium">Default</p>
+            <Progress value={60} />
           </div>
           <div className="space-y-2">
-            <Progress value={60}>
-              <ProgressLabel>Large</ProgressLabel>
-              <ProgressTrack className="h-4">
-                <ProgressIndicator />
-              </ProgressTrack>
-            </Progress>
+            <p className="text-sm font-medium">Large</p>
+            <Progress value={60} className="[&_[data-slot=progress-indicator]]:h-4" />
           </div>
         </div>
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold">Without Label</h2>
+        <h2 className="text-2xl font-bold">Without label</h2>
         <div className="space-y-2">
-          <Progress value={65}>
-            <ProgressTrack>
-              <ProgressIndicator />
-            </ProgressTrack>
-            <ProgressValue />
-          </Progress>
+          <Progress value={65} />
         </div>
       </section>
     </FixtureWrapper>

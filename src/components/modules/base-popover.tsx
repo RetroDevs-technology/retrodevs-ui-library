@@ -37,6 +37,8 @@ interface IPopoverSimpleProps {
   trigger: React.ReactNode
   /** The content to display in the popover */
   content: React.ReactNode
+  /** Extra classes for popover surface */
+  contentClassName?: string
   /** Controlled open state */
   open?: boolean
   /** Callback when open state changes */
@@ -70,8 +72,11 @@ export function BasePopover(props: BasePopoverProps) {
   if ("trigger" in props && "content" in props && props.trigger !== undefined && props.content !== undefined) {
     return (
       <Popover open={open} onOpenChange={onOpenChange}>
-        <BasePopoverTrigger render={React.isValidElement(props.trigger) ? props.trigger : <button>{props.trigger}</button>} />
-        <BasePopoverContent className="max-w-fit border-border flex flex-col bg-popover p-0">
+        <BasePopoverTrigger asChild>
+          {React.isValidElement(props.trigger) ? props.trigger : <button type="button">{props.trigger}</button>}
+        </BasePopoverTrigger>
+        <BasePopoverContent
+          className={cn("max-w-fit border-none flex flex-col bg-medium-gray p-0", props.contentClassName)}>
           {props.content}
         </BasePopoverContent>
       </Popover>
@@ -118,7 +123,7 @@ export function BasePopoverContent({
 }) {
   return (
     <CorePopoverContent
-      className={cn("max-w-fit border-border flex flex-col bg-popover p-0", className)}
+      className={cn("max-w-fit border-none flex flex-col bg-medium-gray p-0", className)}
       align={align}
       sideOffset={sideOffset}
       {...props}
