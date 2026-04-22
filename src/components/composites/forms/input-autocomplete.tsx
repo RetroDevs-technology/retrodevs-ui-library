@@ -116,7 +116,7 @@ export function InputAutocomplete<T>({
 
   return (
     <div className={cn("relative w-full", className)}>
-      {title ? <p className="text-sm text-foreground mb-2">{title}</p> : null}
+      {title ? <p className="text-sm text-[#141414] mb-2">{title}</p> : null}
       <Input
         className={cn("w-full", inputClassName)}
         placeholder={placeholder}
@@ -150,10 +150,10 @@ export function InputAutocomplete<T>({
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => handleSelect(item)}
                     className={cn(
-                      "text-start justify-start text-sm h-8 w-full px-2",
+                      "text-start justify-start text-sm h-8 w-full px-2 rounded-md",
                       item.isTyped
-                        ? "bg-primary/10 text-primary hover:bg-primary/15"
-                        : "bg-muted/50 text-foreground hover:bg-muted"
+                        ? "bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 hover:text-blue-800"
+                        : "bg-[#F0F0F0] text-[#141414] hover:bg-gray-800 hover:text-white",
                     )}
                   >
                     {item.label}

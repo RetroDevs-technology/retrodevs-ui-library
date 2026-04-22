@@ -14,9 +14,12 @@ export default function TabsShowcase() {
   const [settingsText] = useFixtureInput("tabsSettingsPanelText", "Settings content goes here")
   const [supportText] = useFixtureInput("tabsSupportPanelText", "Support content goes here")
 
+  const placeholderIcon = "https://via.placeholder.com/17x18"
+
   const tabs = [
     {
       value: "profile" as const,
+      image: placeholderIcon,
       name: "Profile",
       element: (
         <Card>
@@ -28,6 +31,7 @@ export default function TabsShowcase() {
     },
     {
       value: "payout" as const,
+      image: placeholderIcon,
       name: "Payout",
       element: (
         <Card>
@@ -39,6 +43,7 @@ export default function TabsShowcase() {
     },
     {
       value: "settings" as const,
+      image: placeholderIcon,
       name: "Settings",
       element: (
         <Card>
@@ -50,6 +55,7 @@ export default function TabsShowcase() {
     },
     {
       value: "support" as const,
+      image: placeholderIcon,
       name: "Support",
       element: (
         <Card>
@@ -88,11 +94,24 @@ export default function TabsShowcase() {
     },
     {
       value: "settings" as const,
+      image: "https://via.placeholder.com/17x18",
       name: "Settings",
       element: (
         <Card>
           <CardContent className="p-6">
-            <p>Settings content without image</p>
+            <p>Settings content</p>
+          </CardContent>
+        </Card>
+      ),
+    },
+    {
+      value: "support" as const,
+      image: "https://via.placeholder.com/17x18",
+      name: "Support",
+      element: (
+        <Card>
+          <CardContent className="p-6">
+            <p>Support content</p>
           </CardContent>
         </Card>
       ),
@@ -110,7 +129,7 @@ export default function TabsShowcase() {
       </section>
 
       <section className="space-y-4 mt-8">
-        <h2 className="text-2xl font-bold">Base Tabs (With Optional Images)</h2>
+        <h2 className="text-2xl font-bold">Base Tabs (with icons)</h2>
         <BaseTab
           activeTab={activeTabWithImages}
           setActiveTab={setActiveTabWithImages}

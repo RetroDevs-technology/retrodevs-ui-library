@@ -37,6 +37,7 @@ import {
 } from "@/components/core/form";
 import type {
   ControllerRenderProps,
+  FieldErrors,
   FieldValues,
   Path,
   UseFormReturn,
@@ -48,6 +49,8 @@ interface FormBaseProps<T extends FieldValues> {
   form: UseFormReturn<T>;
   /** Form submission handler */
   onSubmit: (data: T) => void;
+  /** Form error handler */
+  onError?: (errors: FieldErrors<T>) => void;
   /** Form content */
   children: ReactNode;
   /** Additional CSS classes for the form */
@@ -61,13 +64,14 @@ interface FormBaseProps<T extends FieldValues> {
 export function FormBase<T extends FieldValues>({
   form,
   onSubmit,
+  onError,
   children,
   className,
 }: FormBaseProps<T>) {
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(onSubmit, onError)}
         className={cn("space-y-8", className)}
       >
         {children}
@@ -95,6 +99,8 @@ interface FormFieldProps<T extends FieldValues> {
   form: UseFormReturn<T>;
   /** Additional CSS classes for the field container */
   className?: string;
+  /** If the field is optional */
+  isOptional?: boolean;
 }
 
 /**
@@ -110,6 +116,7 @@ export function FormField<T extends FieldValues>({
   children,
   form,
   className,
+  isOptional = false,
 }: FormFieldProps<T>) {
   return (
     <ShadcnFormField
@@ -118,7 +125,7 @@ export function FormField<T extends FieldValues>({
       render={({ field, fieldState }) => {
         const errorClass =
           showError && fieldState.invalid
-            ? "border-destructive focus-visible:ring-destructive"
+            ? "border-red-500 focus-visible:ring-red-500 text-red-900"
             : "";
 
         const isSelectComponent = (element: React.ReactElement) => {
@@ -139,7 +146,12 @@ export function FormField<T extends FieldValues>({
 
         return (
           <FormItem className={cn("flex flex-col items-start", className)}>
-            {label && <FormLabel className="text-inherit">{label}</FormLabel>}
+            {label && (
+              <FormLabel className="text-sm text-[#1a1a1a] text-inherit">
+                {label}{" "}
+                {isOptional && <span className="text-accent">(optional)</span>}
+              </FormLabel>
+            )}
             <FormControl>
               {typeof children === "function"
                 ? children(field)
@@ -164,7 +176,11 @@ export function FormField<T extends FieldValues>({
                   } as React.HTMLAttributes<HTMLElement>)
                 : null}
             </FormControl>
-            {description && <FormDescription>{description}</FormDescription>}
+            {description && (
+              <FormDescription className="text-xs text-medium-gray">
+                {description}
+              </FormDescription>
+            )}
             {showMessage && <FormMessage className="text-end" />}
           </FormItem>
         );

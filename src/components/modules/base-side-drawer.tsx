@@ -55,7 +55,7 @@ const SIDE_DRAWER_SIZES = {
 } as const
 
 /** Side drawer variant styles using class-variance-authority */
-const sideDrawerVariants = cva('gap-4 border-none', {
+const sideDrawerVariants = cva('gap-10 border-none', {
   variants: {
     size: SIDE_DRAWER_SIZES,
   },
@@ -116,6 +116,7 @@ export default function BaseSideDrawer({
   children,
   hasNav = false,
   navChildren,
+  closeFunction,
 }: CustomSideDrawerProps) {
   const [internalOpen, setInternalOpen] = useState<boolean>(false)
 
@@ -126,12 +127,22 @@ export default function BaseSideDrawer({
 
   return (
     <Sheet open={open ? open : internalOpen} onOpenChange={handleOpenChange}>
-      {trigger && (
-        <SheetTrigger 
-          render={React.isValidElement(trigger) ? trigger : <button>{trigger}</button>}
-          className={triggerClassName}
-        />
-      )}
+      {trigger ? (
+        <SheetTrigger asChild>
+          {React.isValidElement(trigger)
+            ? React.cloneElement(trigger as React.ReactElement<{ className?: string }>, {
+                className: cn(
+                  (trigger as React.ReactElement<{ className?: string }>).props.className,
+                  triggerClassName,
+                ),
+              })
+            : (
+                <button type="button" className={triggerClassName}>
+                  {trigger}
+                </button>
+              )}
+        </SheetTrigger>
+      ) : null}
       <SheetContent
         side={side}
         className={cn(
@@ -139,9 +150,9 @@ export default function BaseSideDrawer({
           sideDrawerVariants({ size }),
           `${hasNav ? '[&>button]:hidden scrollbar-none' : ''}`,
         )}>
-        {hasNav && <SideDrawerNav>{navChildren}</SideDrawerNav>}
+        {hasNav && <SideDrawerNav closeFunction={closeFunction}>{navChildren}</SideDrawerNav>}
 
-        <SheetHeader className='w-full flex flex-col items-center justify-center sr-only'>
+        <SheetHeader className='w-full flex flex-col items-center justify-center font-input-mono sr-only'>
           <SheetTitle className='text-2xl'>{title}</SheetTitle>
           <SheetDescription className='text-lg'>{description}</SheetDescription>
         </SheetHeader>
@@ -177,7 +188,7 @@ function SideDrawerNav({
         },
       )}>
       {children}
-      <SheetClose onClick={closeFunction} className='p-2 hover:bg-white/10 rounded-lg size-6'>
+      <SheetClose onClick={closeFunction} className='p-2 hover:bg-white/10 rounded-lg w-6 h-6'>
         <X />
       </SheetClose>
     </nav>

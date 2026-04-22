@@ -32,7 +32,7 @@ export default function SelectShowcase() {
           placeholder={placeholder}
           items={items}
           label={groupLabel}
-          width={w}
+          style={{ minWidth: w }}
           isLoading={isLoading}
           onChange={(val) => setValue(val)}
         />
@@ -62,7 +62,12 @@ export default function SelectShowcase() {
 
       <section className="space-y-4">
         <h2 className="text-2xl font-bold">Custom Width</h2>
-        <BaseSelect placeholder="Wide select" items={items} width={300} onChange={(val) => setValue(val)} />
+        <BaseSelect
+          placeholder="Wide select"
+          items={items}
+          style={{ minWidth: 300 }}
+          onChange={(val) => setValue(val)}
+        />
       </section>
     </FixtureWrapper>
   )

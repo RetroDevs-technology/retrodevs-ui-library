@@ -1,30 +1,13 @@
 import * as React from "react"
-import {
-  BasePopover,
-  BasePopoverTrigger,
-} from "@/components/modules/base-popover"
+import { BasePopover, BasePopoverTrigger } from "@/components/modules/base-popover"
 import { getDatePickerDisplayValue } from "./utils/formatDate"
 import { DatePickerTrigger } from "./addons/trigger"
 import { CalendarWrapper } from "./addons/calendar-wrapper"
 import type { DatePickerComponentProps } from "./types"
 
 /**
- * Date picker component.
- * Combines Calendar with Popover for a dropdown date selection interface.
- *
- * @param props - DatePicker props
- * @param props.date - Selected date (Date object)
- * @param props.onDateChange - Callback when date changes
- * @param props.placeholder - Placeholder text (default: "Pick a date")
- * @param props.className - Additional CSS classes
- * @param props.mode - Selection mode ("single" | "range")
- * @param props.selected - Selected date(s) - can be Date or { from: Date, to: Date }
- * @returns Date picker component
- *
- * @example
- * ```tsx
- * <DatePicker date={date} onDateChange={setDate} />
- * ```
+ * Legacy popover-only date picker (simple API: `date` / `onDateChange` / `onRangeChange`).
+ * Prefer {@link BaseDatePicker} for parity with Formatic apps (mobile, time, controlled `value`).
  */
 export function DatePicker({
   date,
@@ -43,7 +26,7 @@ export function DatePicker({
       onDateChange?.(selectedDate)
       setOpen(false)
     },
-    [onDateChange]
+    [onDateChange],
   )
 
   const handleRangeSelect = React.useCallback(
@@ -51,32 +34,28 @@ export function DatePicker({
       if (onRangeChange) {
         onRangeChange(selectedRange)
       }
-      // Keep popover open until both dates are selected
       if (selectedRange?.from && selectedRange?.to) {
         setOpen(false)
       }
     },
-    [onRangeChange]
+    [onRangeChange],
   )
 
   const displayValue = React.useMemo(
     () => getDatePickerDisplayValue(mode, date, selected, placeholder),
-    [date, selected, mode, placeholder]
+    [date, selected, mode, placeholder],
   )
 
-  const hasValue = mode === "single" ? !!date : !!(selected && typeof selected === "object" && "from" in selected && selected.from)
+  const hasValue =
+    mode === "single"
+      ? !!date
+      : !!(selected && typeof selected === "object" && "from" in selected && selected.from)
 
   return (
     <BasePopover open={open} onOpenChange={setOpen}>
-      <BasePopoverTrigger
-        render={
-          <DatePickerTrigger
-            displayValue={displayValue}
-            hasValue={hasValue}
-            className={className}
-          />
-        }
-      />
+      <BasePopoverTrigger asChild>
+        <DatePickerTrigger displayValue={displayValue} hasValue={hasValue} className={className} />
+      </BasePopoverTrigger>
       <CalendarWrapper
         mode={mode}
         date={date}

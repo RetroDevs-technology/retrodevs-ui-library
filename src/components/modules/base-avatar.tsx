@@ -12,12 +12,12 @@
  * />
  * ```
  */
+"use client"
 
-
-import { cn } from '@/lib/utils'
-import { Avatar, AvatarFallback, AvatarImage } from '../core/avatar'
-import { User } from 'iconsax-react'
-import type { ReactNode } from 'react'
+import { cn } from "@/lib/utils"
+import { User } from "iconsax-react"
+import type { ReactNode } from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "../core/avatar"
 
 interface CustomAvatarProps {
   /** The source URL of the avatar image */
@@ -27,20 +27,18 @@ interface CustomAvatarProps {
   /** Custom fallback content to display when the image fails to load */
   fallback?: ReactNode
   /** Size variant of the avatar */
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'huge'
+  size?: "sm" | "md" | "lg" | "xl" | "huge"
   /** Additional CSS classes to apply to the avatar */
   className?: string
-  /** Fallback image path when src is not provided */
-  defaultImage?: string
 }
 
-function BaseAvatar({ src, alt, fallback, size = 'md', className, defaultImage }: CustomAvatarProps) {
+function BaseAvatar({ src, alt, fallback, size = "md", className }: CustomAvatarProps) {
   const sizeClasses = {
-    sm: 'h-8 w-8',
-    md: 'h-10 w-10',
-    lg: 'h-12 w-12',
-    xl: 'h-14 w-14',
-    huge: 'h-32 w-32',
+    sm: "h-8 w-8",
+    md: "h-10 w-10",
+    lg: "h-12 w-12",
+    xl: "h-14 w-14",
+    huge: "h-32 w-32",
   }
 
   const iconSizes = {
@@ -52,12 +50,8 @@ function BaseAvatar({ src, alt, fallback, size = 'md', className, defaultImage }
   }
 
   return (
-    <Avatar className={cn(sizeClasses[size], 'object-cover', className)}>
-      <AvatarImage
-        src={src || defaultImage}
-        alt={alt}
-        className='object-cover'
-      />
+    <Avatar className={cn(sizeClasses[size], "object-cover", className)}>
+      <AvatarImage src={src || "/assets/images/default-user.svg"} alt={alt} className="object-cover" />
       <AvatarFallback>{fallback || <User size={iconSizes[size]} />}</AvatarFallback>
     </Avatar>
   )

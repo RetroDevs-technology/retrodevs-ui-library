@@ -72,9 +72,9 @@ export function BaseCarousel({
 
   return (
     <Carousel className={cn("relative w-full", className)} setApi={setApi}>
-      <CarouselContent className="min-h-0">
+      <CarouselContent className="min-h-screen">
         {items.map((item) => (
-          <CarouselItem key={item.id} className={cn("w-full", itemClassName)}>
+          <CarouselItem key={item.id} className={cn("w-full ", itemClassName)}>
             {item.content}
           </CarouselItem>
         ))}
@@ -83,7 +83,7 @@ export function BaseCarousel({
       {showIndicators && (
         <div
           className={cn(
-            "absolute left-1/2 transform -translate-x-1/2 flex items-center gap-1.5 z-50",
+            "absolute left-1/2 transform -translate-x-1/2 flex items-center gap-1.5 z-[99999]",
             indicatorsPosition
           )}
         >
@@ -91,8 +91,8 @@ export function BaseCarousel({
             <div
               key={item.id}
               className={cn("rounded-full transition-all duration-150", {
-                "bg-muted size-2": index !== activeIndex,
-                "bg-primary outline-primary outline-2 size-5": index === activeIndex,
+                "bg-soft-gray size-2": index !== activeIndex,
+                " outline-white outline-2 size-5": index === activeIndex,
               })}
             />
           ))}
@@ -101,8 +101,8 @@ export function BaseCarousel({
 
       {showNavigation && (
         <>
-          <CarouselPrevious className="z-20 border-none bg-transparent hover:bg-accent hover:text-foreground size-5" />
-          <CarouselNext className="z-20 border-none bg-transparent hover:bg-accent hover:text-foreground size-5" />
+          <CarouselPrevious className="z-20 border-none bg-transparent hover:bg-white/10 hover:text-white w-5 h-5" />
+          <CarouselNext className="z-20 border-none bg-transparent hover:bg-white/10 hover:text-white w-5 h-5" />
         </>
       )}
     </Carousel>

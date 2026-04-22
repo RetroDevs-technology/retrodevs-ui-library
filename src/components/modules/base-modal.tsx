@@ -17,8 +17,8 @@
  * </BaseModal>
  * ```
  */
-import * as React from 'react'
-import type { ReactNode } from 'react'
+import * as React from "react"
+import type { ReactNode } from "react"
 import {
   Dialog,
   DialogTrigger,
@@ -26,18 +26,19 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-  DialogFooter,
-} from '../core/dialog'
-import { cn } from '@/lib/utils'
+} from "../core/dialog"
+import { cn } from "@/lib/utils"
 
 /** Available modal size options */
 const sizeClasses = {
-  /** Small modal */
-  small: 'sm:max-w-md',
-  /** Large modal */
-  large: 'sm:max-w-4xl',
+  /** Small modal (415px max width) */
+  small: "sm:max-w-[415px]",
+  /** Large modal (864px max width) */
+  large: "sm:max-w-[864px]",
+  /** Extra large modal (1124px max width) */
+  xl: "sm:max-w-[1124px]",
   /** Full height modal with vertical scrolling */
-  full: 'h-full sm:overflow-y-auto w-full max-w-full',
+  full: " h-full sm:overflow-y-auto w-full max-w-full",
 }
 
 interface CustomModalProps {
@@ -77,7 +78,7 @@ function BaseModal({
   children,
   open,
   onClose,
-  size = 'small',
+  size = "small",
   hasFooter = false,
   footerContent,
   className,
@@ -86,25 +87,33 @@ function BaseModal({
   return (
     <Dialog
       open={open}
-      onOpenChange={(open) => {
-        if (!open) {
-          onClose?.(open)
-        }
-      }}
-      disablePointerDismissal={disableOverlayClick}>
-      {trigger && (
-        <DialogTrigger render={React.isValidElement(trigger) ? trigger : <button>{trigger}</button>} />
-      )}
+      onOpenChange={(nextOpen) => {
+        onClose?.(nextOpen)
+      }}>
+      {trigger ? (
+        <DialogTrigger asChild>
+          {React.isValidElement(trigger) ? trigger : <button type="button">{trigger}</button>}
+        </DialogTrigger>
+      ) : null}
       <DialogContent
-        className={cn(sizeClasses[size], className)}>
-        {title && (
-          <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-            {description && <DialogDescription>{description}</DialogDescription>}
-          </DialogHeader>
+        className={cn(
+          ` ${sizeClasses[size]} p-0 rounded-[8px]  block w-[90%] sm:w-full`,
+          className,
         )}
-        {children}
-        {hasFooter && <DialogFooter>{footerContent}</DialogFooter>}
+        onPointerDownOutside={disableOverlayClick ? (e) => e.preventDefault() : undefined}
+        onInteractOutside={disableOverlayClick ? (e) => e.preventDefault() : undefined}
+        onClick={(e) => e.stopPropagation()}>
+        <div className="sr-only">
+          <DialogHeader
+            className={cn("w-full flex flex-col items-center justify-center font-input-mono")}>
+            <DialogTitle>{title || "Modal Dialog"}</DialogTitle>
+            <DialogDescription>{description || "Modal content"}</DialogDescription>
+          </DialogHeader>
+        </div>
+
+        <div className="flex flex-col">{children}</div>
+
+        {hasFooter && <div className="mt-auto pt-4 ml-auto">{footerContent}</div>}
       </DialogContent>
     </Dialog>
   )

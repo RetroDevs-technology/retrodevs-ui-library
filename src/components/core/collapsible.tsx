@@ -1,39 +1,19 @@
-import * as React from "react"
-import { Collapsible } from "@base-ui/react/collapsible"
+import * as CollapsiblePrimitive from "@radix-ui/react-collapsible"
 
-import { cn } from "@/lib/utils"
-
-function CollapsibleRoot({ ...props }: React.ComponentProps<typeof Collapsible.Root>) {
-  return <Collapsible.Root data-slot="collapsible" {...props} />
+function Collapsible({ ...props }: React.ComponentProps<typeof CollapsiblePrimitive.Root>) {
+  return <CollapsiblePrimitive.Root data-slot="collapsible" {...props} />
 }
 
-const CollapsibleTrigger = React.forwardRef<
-  HTMLButtonElement,
-  React.ComponentPropsWithoutRef<typeof Collapsible.Trigger>
->(({ className, ...props }, ref) => (
-  <Collapsible.Trigger
-    ref={ref}
-    data-slot="collapsible-trigger"
-    className={cn(className)}
-    {...props}
-  />
-))
-CollapsibleTrigger.displayName = "CollapsibleTrigger"
+function CollapsibleTrigger({
+  ...props
+}: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleTrigger>) {
+  return <CollapsiblePrimitive.CollapsibleTrigger data-slot="collapsible-trigger" {...props} />
+}
 
-const CollapsibleContent = React.forwardRef<
-  HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof Collapsible.Panel>
->(({ className, ...props }, ref) => (
-  <Collapsible.Panel
-    ref={ref}
-    data-slot="collapsible-content"
-    className={cn(
-      "overflow-hidden text-sm data-[closed]:animate-accordion-up data-[open]:animate-accordion-down",
-      className
-    )}
-    {...props}
-  />
-))
-CollapsibleContent.displayName = "CollapsibleContent"
+function CollapsibleContent({
+  ...props
+}: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleContent>) {
+  return <CollapsiblePrimitive.CollapsibleContent data-slot="collapsible-content" {...props} />
+}
 
-export { CollapsibleRoot as Collapsible, CollapsibleTrigger, CollapsibleContent }
+export { Collapsible, CollapsibleTrigger, CollapsibleContent }

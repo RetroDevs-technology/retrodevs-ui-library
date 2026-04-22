@@ -13,20 +13,25 @@ import BaseTooltip from "../src/components/modules/base-tooltip"
 import { Button } from "../src/components/core/button"
 import { FixtureWrapper } from "./FixtureWrapper"
 
+const tabIconUrl = "https://github.com/shadcn.png"
+
 const tabs: ITabProps[] = [
   {
     value: "profile",
     name: "Profile",
+    image: tabIconUrl,
     element: <p className="text-sm text-muted-foreground">Profile panel content.</p>,
   },
   {
     value: "settings",
     name: "Settings",
+    image: tabIconUrl,
     element: <p className="text-sm text-muted-foreground">Settings panel content.</p>,
   },
   {
     value: "support",
     name: "Support",
+    image: tabIconUrl,
     element: <p className="text-sm text-muted-foreground">Support panel content.</p>,
   },
 ]
