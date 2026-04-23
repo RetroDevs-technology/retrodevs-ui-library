@@ -91,8 +91,8 @@ export function BaseSelect({
     : []
 
   const handleValueChange = React.useCallback(
-    (newValue: string) => {
-      onChange?.(newValue)
+    (newValue: unknown) => {
+      onChange?.(String(newValue ?? ""))
     },
     [onChange],
   )
