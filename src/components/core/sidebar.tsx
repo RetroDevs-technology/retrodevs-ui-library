@@ -1,9 +1,8 @@
-import { Slot } from "@radix-ui/react-slot"
 import { type VariantProps, cva } from "class-variance-authority"
 import { PanelLeftIcon } from "lucide-react"
 import * as React from "react"
 
-import * as TooltipPrimitive from "@radix-ui/react-tooltip"
+import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip"
 
 import { Button } from "./button"
 import { Input } from "./input"
@@ -122,7 +121,7 @@ function SidebarProvider({
 
   return (
     <SidebarContext.Provider value={contextValue}>
-      <TooltipPrimitive.Provider delayDuration={0}>
+      <TooltipPrimitive.Provider delay={0}>
         <div
           data-slot="sidebar-wrapper"
           style={
@@ -378,10 +377,22 @@ function SidebarGroupLabel({
 }: React.ComponentProps<"div"> & {
   asChild?: boolean
 }) {
-  const Comp = asChild ? Slot : "div"
+  if (asChild && React.isValidElement(props.children)) {
+    return React.cloneElement(props.children as React.ReactElement<Record<string, unknown>>, {
+      ...props,
+      className: cn(
+        "text-sidebar-foreground/70 ring-sidebar-ring flex h-8 shrink-0 items-center rounded-md px-2 text-xs font-medium outline-hidden transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0",
+        className,
+        (props.children as React.ReactElement).props.className,
+      ),
+      "data-slot": "sidebar-group-label",
+      "data-sidebar": "group-label",
+    })
+  }
 
   return (
-    <Comp
+    <div
       data-slot="sidebar-group-label"
       data-sidebar="group-label"
       className={cn(
@@ -401,10 +412,23 @@ function SidebarGroupAction({
 }: React.ComponentProps<"button"> & {
   asChild?: boolean
 }) {
-  const Comp = asChild ? Slot : "button"
+  if (asChild && React.isValidElement(props.children)) {
+    return React.cloneElement(props.children as React.ReactElement<Record<string, unknown>>, {
+      ...props,
+      className: cn(
+        "text-sidebar-foreground ring-sidebar-ring hover:bg-accent/95 hover:text-primary absolute top-3.5 right-3 flex aspect-square w-5 items-center justify-center rounded-md p-0 outline-hidden transition-transform focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "after:absolute after:-inset-2 md:after:hidden",
+        "group-data-[collapsible=icon]:hidden",
+        className,
+        (props.children as React.ReactElement).props.className,
+      ),
+      "data-slot": "sidebar-group-action",
+      "data-sidebar": "group-action",
+    })
+  }
 
   return (
-    <Comp
+    <button
       data-slot="sidebar-group-action"
       data-sidebar="group-action"
       className={cn(
@@ -486,7 +510,7 @@ function SidebarMenuButton({
 }: React.ComponentProps<"button"> & {
   asChild?: boolean
   isActive?: boolean
-  tooltip?: string | React.ComponentProps<typeof TooltipPrimitive.Content>
+  tooltip?: string | React.ComponentProps<typeof TooltipPrimitive.Popup>
 } & VariantProps<typeof sidebarMenuButtonVariants>) {
   const { isMobile, state } = useSidebar()
 
@@ -499,9 +523,19 @@ function SidebarMenuButton({
   )
 
   if (!tooltip) {
-    const Comp = asChild ? Slot : "button"
+    if (asChild && React.isValidElement(children)) {
+      return React.cloneElement(children as React.ReactElement<Record<string, unknown>>, {
+        ...props,
+        className: cn(sharedClassName, (children as React.ReactElement).props.className),
+        "data-slot": "sidebar-menu-button",
+        "data-sidebar": "menu-button",
+        "data-size": size,
+        "data-active": isActive,
+      })
+    }
+
     return (
-      <Comp
+      <button
         data-slot="sidebar-menu-button"
         data-sidebar="menu-button"
         data-size={size}
@@ -510,12 +544,13 @@ function SidebarMenuButton({
         {...props}
       >
         {children}
-      </Comp>
+      </button>
     )
   }
 
-  const tooltipContentProps: React.ComponentProps<typeof TooltipPrimitive.Content> =
+  const tooltipContentProps: React.ComponentProps<typeof TooltipPrimitive.Popup> =
     typeof tooltip === "string" ? { children: tooltip } : tooltip
+  const { ref: _ignoredRef, ...triggerProps } = props
 
   return (
     <TooltipPrimitive.Root>
@@ -526,20 +561,20 @@ function SidebarMenuButton({
         data-size={size}
         data-active={isActive}
         className={sharedClassName}
-        {...props}
+        {...triggerProps}
       >
         {children}
       </TooltipPrimitive.Trigger>
       <TooltipPrimitive.Portal>
-        <TooltipPrimitive.Content
-          side="right"
-          align="center"
-          className={cn(
-            "bg-primary text-primary-foreground animate-in fade-in-0 zoom-in-95 z-50 w-fit rounded-md px-3 py-1.5 text-xs",
-            (state !== "collapsed" || isMobile) && "hidden"
-          )}
-          {...tooltipContentProps}
-        />
+        <TooltipPrimitive.Positioner side="right" align="center">
+          <TooltipPrimitive.Popup
+            className={cn(
+              "bg-primary text-primary-foreground animate-in fade-in-0 zoom-in-95 z-50 w-fit rounded-md px-3 py-1.5 text-xs",
+              (state !== "collapsed" || isMobile) && "hidden",
+            )}
+            {...tooltipContentProps}
+          />
+        </TooltipPrimitive.Positioner>
       </TooltipPrimitive.Portal>
     </TooltipPrimitive.Root>
   )
@@ -554,10 +589,28 @@ function SidebarMenuAction({
   asChild?: boolean
   showOnHover?: boolean
 }) {
-  const Comp = asChild ? Slot : "button"
+  if (asChild && React.isValidElement(props.children)) {
+    return React.cloneElement(props.children as React.ReactElement<Record<string, unknown>>, {
+      ...props,
+      className: cn(
+        "text-sidebar-foreground ring-sidebar-ring hover:bg-accent/95 hover:text-primary peer-hover/menu-button:text-sidebar-accent-foreground absolute top-1.5 right-1 flex aspect-square w-5 items-center justify-center rounded-md p-0 outline-hidden transition-transform focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "after:absolute after:-inset-2 md:after:hidden",
+        "peer-data-[size=sm]/menu-button:top-1",
+        "peer-data-[size=default]/menu-button:top-1.5",
+        "peer-data-[size=lg]/menu-button:top-2.5",
+        "group-data-[collapsible=icon]:hidden",
+        showOnHover &&
+        "peer-data-[active=true]/menu-button:text-sidebar-accent-foreground group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 md:opacity-0",
+        className,
+        (props.children as React.ReactElement).props.className,
+      ),
+      "data-slot": "sidebar-menu-action",
+      "data-sidebar": "menu-action",
+    })
+  }
 
   return (
-    <Comp
+    <button
       data-slot="sidebar-menu-action"
       data-sidebar="menu-action"
       className={cn(
@@ -569,7 +622,7 @@ function SidebarMenuAction({
         "peer-data-[size=lg]/menu-button:top-2.5",
         "group-data-[collapsible=icon]:hidden",
         showOnHover &&
-          "peer-data-[active=true]/menu-button:text-sidebar-accent-foreground group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 md:opacity-0",
+        "peer-data-[active=true]/menu-button:text-sidebar-accent-foreground group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 md:opacity-0",
         className,
       )}
       {...props}
@@ -663,10 +716,27 @@ function SidebarMenuSubButton({
   size?: "sm" | "md"
   isActive?: boolean
 }) {
-  const Comp = asChild ? Slot : "a"
+  if (asChild && React.isValidElement(props.children)) {
+    return React.cloneElement(props.children as React.ReactElement<Record<string, unknown>>, {
+      ...props,
+      className: cn(
+        "text-sidebar-foreground ring-sidebar-ring hover:bg-accent/95 hover:text-primary active:bg-sidebar-accent active:text-sidebar-accent-foreground [&>svg]:text-sidebar-accent-foreground flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 outline-hidden focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
+        "data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground",
+        size === "sm" && "text-xs",
+        size === "md" && "text-sm",
+        "group-data-[collapsible=icon]:hidden",
+        className,
+        (props.children as React.ReactElement).props.className,
+      ),
+      "data-slot": "sidebar-menu-sub-button",
+      "data-sidebar": "menu-sub-button",
+      "data-size": size,
+      "data-active": isActive,
+    })
+  }
 
   return (
-    <Comp
+    <a
       data-slot="sidebar-menu-sub-button"
       data-sidebar="menu-sub-button"
       data-size={size}

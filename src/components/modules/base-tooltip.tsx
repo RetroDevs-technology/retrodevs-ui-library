@@ -19,7 +19,7 @@
 
 import { TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/core/tooltip"
 import { cn } from "@/lib/utils"
-import * as TooltipPrimitive from "@radix-ui/react-tooltip"
+import { Tooltip } from "@base-ui/react/tooltip"
 import * as React from "react"
 import { useCallback, useEffect, useState } from "react"
 
@@ -92,7 +92,7 @@ function BaseTooltip({
 
   return (
     <TooltipProvider delayDuration={delayDuration}>
-      <TooltipPrimitive.Root open={open} onOpenChange={setOpen}>
+      <Tooltip.Root open={open} onOpenChange={setOpen}>
         {React.isValidElement(children) ? (
           <TooltipTrigger asChild>
             {React.cloneElement(children as React.ReactElement<Record<string, unknown>>, {
@@ -120,7 +120,7 @@ function BaseTooltip({
           className={cn("max-w-[90vw] md:max-w-[460px] break-words mx-4 my-2", className)}>
           {content}
         </TooltipContent>
-      </TooltipPrimitive.Root>
+      </Tooltip.Root>
     </TooltipProvider>
   )
 }
