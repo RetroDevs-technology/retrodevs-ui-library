@@ -23,6 +23,7 @@ const Slider = React.forwardRef<
       min = 0,
       max = 100,
       step = 1,
+      orientation = "horizontal",
       ...props
     },
     ref,
@@ -40,16 +41,36 @@ const Slider = React.forwardRef<
         defaultValue={normalizedDefault}
         value={normalizedValue}
         className={cn(
-          "relative flex w-full touch-none select-none items-center data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col",
+          "relative flex touch-none select-none items-center",
+          orientation === "horizontal" && "w-full",
+          orientation === "vertical" && "h-full min-h-44 w-auto flex-col",
           className,
         )}
+        orientation={orientation}
         {...props}>
-        <SliderPrimitive.Control className="flex w-full touch-none items-center py-1 select-none data-[orientation=vertical]:h-full data-[orientation=vertical]:w-auto">
-          <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-secondary data-[orientation=vertical]:h-full data-[orientation=vertical]:w-2">
-            <SliderPrimitive.Indicator className="absolute h-full bg-primary data-[orientation=vertical]:w-full" />
+        <SliderPrimitive.Control
+          className={cn(
+            "flex touch-none items-center select-none",
+            orientation === "horizontal" && "w-full py-1",
+            orientation === "vertical" && "h-full w-auto px-1",
+          )}>
+          <SliderPrimitive.Track
+            className={cn(
+              "relative grow overflow-hidden rounded-full bg-secondary",
+              orientation === "horizontal" && "h-2 w-full",
+              orientation === "vertical" && "h-full w-2",
+            )}>
+            <SliderPrimitive.Indicator
+              className={cn(
+                "absolute bg-primary",
+                orientation === "horizontal" && "h-full",
+                orientation === "vertical" && "w-full",
+              )}
+            />
             {Array.from({ length: thumbCount }, (_, i) => (
               <SliderPrimitive.Thumb
                 key={i}
+                index={i}
                 className="block h-5 w-5 rounded-full border-2 border-primary bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
               />
             ))}
